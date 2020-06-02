@@ -19,6 +19,6 @@ from mysite import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('Srank/add/', views.add_Account),
-    path('Srank/', views.RootPage)
+    path('Srank/', views.RootPage),
+    path('', views.login)
 ]

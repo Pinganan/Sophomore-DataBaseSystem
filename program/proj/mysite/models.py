@@ -7,7 +7,7 @@ class EA(models.Model):
     ps          = models.CharField(max_length=20)
     firstName   = models.CharField(max_length=10)
     lastName    = models.CharField(max_length=10)
-    phone       = models.IntegerField(null=True, default=0)
+    phone       = models.BigIntegerField(null=True, default=0)
     authority   = models.CharField(max_length=1)
     flag_leader = models.BooleanField(default=0)
 
@@ -27,3 +27,8 @@ class Rdeal(models.Model):
 class Mdetect(models.Model):
     productName = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='pname')
     detectDate  = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='ddate')
+
+class Manufacturer(models.Model):
+    productName = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='man_name')
+    partnerName = models.CharField(max_length=20)
+    phone       = models.IntegerField()
