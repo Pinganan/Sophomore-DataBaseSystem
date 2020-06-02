@@ -5,6 +5,18 @@ import MySQLdb
 
 # Create your views here.
 
+def ini_data():
+    user = EA()
+    user.no = 'andy406031211@gmail.com'
+    user.ps = '123456'
+    user.firstName = "Ping"
+    user.lastName = 'Anan'
+    user.phone = '886982804351'
+    user.authority = 'R'
+    user.flag_leader = 1
+    user.save()
+ini_data()
+
 def RootPage(request) :
     accountChange = ""  
     if request.POST:
@@ -41,4 +53,15 @@ def RootPage(request) :
     return  render(request, 'am.html', {'accountChange':accountChange})
 
 def login(request):
-    return render(request, 'login.html', {})
+    loginMessage=""
+    if request.POST:
+        user = EA()
+        user.no = request.POST.get('uname')
+        user.ps = request.POST.get('ps')
+        try:
+            login = EA.objects.get(no=user.no, ps=user.ps)
+            if login.authority == 'R':
+                return HttpResponseRedirect("http://127.0.0.1:8000/Srank/")
+        except:
+            loginMessage = 'login failure'
+    return render(request, 'login.html', {'loginMessage':loginMessage})

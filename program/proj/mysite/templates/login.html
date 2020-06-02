@@ -8,17 +8,19 @@
 <body>
   <h1>Login</h1>
   <form method="POST" action="">
+    {% csrf_token %}
     <div>
       <label for="uname"><b>Username</b></label><br>
       <input type="text" id="uname" placeholder="Enter Username" name="uname" required>
       <br>
       <br>
-      <label for="psw"><b>Password</b></label><br>
-      <input type="password " id="psw" placeholder="Enter Password" name="psw" required>
+      <label for="ps"><b>Password</b></label><br>
+      <input type="password" id="ps" placeholder="Enter Password" name="ps" required>
       <br>
       <br>
       <button type="submit">Login</button>
-      <br><br><a href="/others"> 其他... </a>
+      <p style="color: red;">{{loginMessage}}</p>
+      <br><a href="/others"> 其他... </a>
     </div>
   </form>
 </body>
