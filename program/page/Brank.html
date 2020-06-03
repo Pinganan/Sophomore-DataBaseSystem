@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOSS PAGE</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-light">
+            <a></a>
+            <div class="form-inline">
+                <h5 style="text-align:right;">Hi，{{bossfirstname}}{{bosslastname}}</h5>
+                <button class="btn btn-secondary">Log out</button>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div width="5%">
+
+            </div>
+            <div class="col-sm-5">
+                <form method="POST" action="" name="operand" id="operand" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <span>
+                        <input type="checkbox" id="c_mname" name="c_mname" value="c_mname"
+                            checked>
+                        <label class="form-check-label" for="c_mname"> Manager</label>
+                        <br>
+                        <input type="text" name="m_fname" id="m_fname" placeholder="First name" required /><br>
+                        <input type="text" name="m_lname" id="m_lname" placeholder="Last name" required /><br><br>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="c_ename" name="c_ename" value="c_ename"
+                            checked>
+                        <label class="form-check-label" for="c_ename"> Employee</label><br>
+                    </span>
+                    <span>
+                        <input type="text" name="e_fname" id="e_fname" placeholder="First name" required /><br>
+                        <input type="text" name="e_lname" id="e_lname" placeholder="Last name" required /><br><br>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="c_manufacturer" name="c_manufacturer"
+                            value="manufacturer" checked>
+                        <label class="form-check-label" for="c_manufacturer"> Manufacturer</label>
+                        <br>
+                        <input type="text" name="mfname" id="mfname" placeholder="Manufacturer name" required /><br><br>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="c_pname" name="c_pname" value="c_pname"
+                            checked>
+                        <label class="form-check-label" for="c_pname"> Product</label>
+                        <br>
+                        <input type="text" name="pname" id="pname" placeholder="Product name" required /><br><br>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="c_date" name="c_date" value="c_date"
+                            checked>
+                        <label class="form-check-label" for="c_date"> Date </label><br>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="c_context" name="context" value="context"
+                            checked>
+                        <label class="form-check-label" for="c_context"> Context</label>
+                        <br>
+                        <input type="text" name="context" id="context" placeholder="Context" required /><br><br>
+                    </span>
+                    <button onclick="">Submit</button>
+                    <p style="color: red;">{{searchChange}}</p>
+                </form>
+            </div>
+            <div class="col-sm-6">
+                <form>
+
+                </form>
+                <h3>顯示資料</h3>
+            </div>
+        </div>
+        <!-- <div class="container">
+            {% for list in lists %}
+            <ul>
+                <li>name : {{list.no}}</li>
+                <li>pass : {{list.ps}}</li>
+                <li>fname: {{list.firstName}}</li>
+                <li>lname: {{list.lastName}}</li>
+            </ul>
+            {% endfor %}
+        </div> -->
+    </div>
+</body>
+
+</html>
