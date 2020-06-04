@@ -16,7 +16,6 @@ class CI(models.Model):
     price       = models.IntegerField()
     signDate    = models.DateField()
     startDate   = models.DateField(null=True)
-    detectDate  = models.DateField(null=True)
     finishDate  = models.DateField(null=True)
     content     = models.TextField()
 
@@ -29,6 +28,7 @@ class Mdetect(models.Model):
     detectDate  = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='ddate')
 
 class Manufacturer(models.Model):
+    manufacturer= models.CharField(max_length=20, default="squirrel")
     productName = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='man_name')
     partnerName = models.CharField(max_length=20)
     phone       = models.IntegerField()

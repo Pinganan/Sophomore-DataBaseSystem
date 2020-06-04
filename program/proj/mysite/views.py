@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import EA
+from .models import CI
 import MySQLdb
+import datetime
 
 # Create your views here.
 
@@ -15,6 +17,13 @@ def ini_data():
     user.authority = 'R'
     user.flag_leader = 1
     user.save()
+    pro = CI()
+    pro.productName = "kkkkk"
+    pro.price = 1000
+    pro.signDate = '1999-9-4'
+    pro.finishDate = '1999-12-11'
+    pro.content = 'fhsgiuyrhtoierw'
+    pro.save()
 ini_data()
 
 def RootPage(request) :
@@ -65,3 +74,9 @@ def login(request):
         except:
             loginMessage = 'login failure'
     return render(request, 'login.html', {'loginMessage':loginMessage})
+
+def graph(request):
+    lists = []
+    mins = CI.objects.all().values('finishDate')
+    lists.append(mins)
+    return render(request, 'others.html', {'mins':lists})
