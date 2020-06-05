@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOSS PAGE</title>
+    <!-- jquery -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        function $I(id) {
+            return document.getElementById(id);
+        }
+        function $N(name) {
+            return document.getElementsByName(name);
+        }
+        function postForm() {
+            var d1 = $I("c_date1").value;
+            var d2 = $I("c_date2").value;
+            if (d1 != "" && d2 == "") {
+                alert("請填寫完整日期範圍")
+            }
+            else if (d2 != "" && d1 == "") {
+                alert("請填寫完整日期範圍")
+            }
+            else {
+                document.operand.action = "";
+                document.operand.submit();
+            }
+        }
+        function printhidden() {
+            var t = $I("c_date").value;
+            alert(t)
+        }
+        function selectPrint(number) {
+            if ($I("result" + number).hidden) {
+                $I("result" + number).hidden = false;
+                // $I("p_result" + number).hidden = false;
+            }
+            else {
+                $I("result" + number).hidden = true;
+                // $I("p_result" + number).hidden = true;
+            }
+        }
+        function printMinfo() {
+
+        }
+        function printOtherdate() {
+
+        }
+        function printMFinfo() {
+
+        }
+        $(function () {
+            $("[data-toggle='popover']").popover();
+        });
+    </script>
+    <style>
+        body {
+            background-color: #e4c4a7;
+        }
+
+        #operand {
+            margin-left: 15%;
+            margin-right: 8%;
+        }
+
+        #submitbtn {
+            margin-left: 5%;
+        }
+
+        .yellow {
+            background-color: floralwhite;
+        }
+
+        .blue {
+            background-color: blanchedalmond;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-light">
+            <a></a>
+            <div class="form-inline">
+                <h5 style="text-align:right;">Hi ，{{bossFirstname}}{{bossLastname}}</h5>
+                <button class="btn btn-secondary">Log out</button>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2">
+                <form method="POST" action="" name="operand" id="operand" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <span>
+                        <h3>查詢欄位</h3>
+                        <span>
+                            <label for="pname"> Product Name</label><br>
+                            <select name="pname" id="pname">
+                                <option value="">None</option>
+                                {% for Pname in Pnames %}
+                                <option value="{{Pname.productName}}">{{Pname.productName}}</option>
+                                {% endfor %}
+                            </select><br><br>
+                        </span>
+                        <label for="mname"> Manager Name</label><br>
+                        <select name="mname" id="mname">
+                            <option value="">None</option>
+                            {% for Mname in Mnames %}
+                            <option value="{{Mname.no}}">{{Mname.firstName}}, {{Mname.lastName}}</option>
+                            {% endfor %}
+                        </select><br><br>
+                    </span>
+                    <span>
+                        <label for="ename"> Employee Name</label><br>
+                        <select name="ename" id="ename">
+                            <option value="">None</option>
+                            {% for Ename in Enames %}
+                            <option value="{{Ename.no}}">{{Ename.firstName}}, {{Ename.lastName}}</option>
+                            {% endfor %}
+                        </select><br><br>
+                    </span>
+                    <span>
+                        <label for="price"> Price Range</label>
+                        <br>
+                        <select name="price" id="price">
+                            <option value="0" selected>None</option>
+                            <option value="1">0~10</option>
+                            <option value="10">10~100</option>
+                            <option value="100">100~1000</option>
+                            <option value="1000">1000~10000</option>
+                        </select><br><br>
+                    </span>
+                    <span>
+                        <label for="mfname"> Manufacturer</label><br>
+                        <select name="mfname" id="mfname">
+                            <option value="">None</option>
+                            {% for MFname in MFnames %}
+                            <option value="{{MFname.productName}}">{{MFname.manufacturer}}}</option>
+                            {% endfor %}
+                        </select><br><br>
+                    </span>
+                    <span>
+                        <label for="c_date1"> Date Range</label><br>
+                        起
+                        <input type="date" id="c_date1" placeholder="2014-09-18"><br>
+                        迄
+                        <input type="date" id="c_date2" placeholder="2014-09-18"><br><br>
+                    </span>
+                    <p style="color: red;">{{searchChange}}</p>
+                </form>
+            </div>
+            <div class="col-sm-10">
+                <form method="POST" action="" name="operand">
+                    {% csrf_token %}
+                    <h3>顯示的資料欄位</h3>
+                    <div class="row align-items-center">
+                        <span class="col blue">
+                            <input type="checkbox" id="p_pname" name="p_pname" value="p_pname" onclick="selectPrint(1)"
+                                checked>
+                            <label class="form-check-label" for="p_pname">Product Name</label>
+                        </span>
+                        <span class="col yellow">
+                            <input type="checkbox" id="p_mname" name="p_mname" value="p_mname" onclick="selectPrint(2)"
+                                checked>
+                            <label class="form-check-label" for="p_mname">Manager Info</label>
+                        </span>
+                        <span class="col blue">
+                            <input type="checkbox" id="p_price" name="p_price" value="p_price" onclick="selectPrint(3)"
+                                checked>
+                            <label class="form-check-label" for="p_price">Price</label>
+                        </span>
+                        <span class="col yellow">
+                            <input type="checkbox" id="p_date" name="p_date" value="p_date" onclick="selectPrint(4)"
+                                checked>
+                            <label class="form-check-label" for="p_date">Date</label>
+                        </span>
+                        <span class="col blue">
+                            <input type="checkbox" id="p_manufacturer" name="p_manufacturer" value="p_manufacturer"
+                                onclick="selectPrint(5)" checked>
+                            <label class="form-check-label" for="p_manufacturer">Manufacturer Info</label>
+                        </span>
+                        <span class="col yellow">
+                            <input type="checkbox" id="p_content" name="p_content" value="p_content"
+                                onclick="selectPrint(6)" checked>
+                            <label class="form-check-label" for="p_content">Content</label>
+                        </span>
+                        <span class="col" id="submitbtn">
+                            <button class="btn btn-light" onclick="postForm()">Search</button>
+                        </span>
+                    </div>
+                    <hr>
+                </form>
+                <div>
+
+                </div>
+                <div>
+                    <h3>{{searchResult}}</h3>
+                    <button onclick="printhidden()">顯示隱藏的項目</button><br><br>
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col" id="result1">
+                                Product Name
+                            </div>
+                            <div class="col" id="result2">
+                                Manager Info
+                            </div>
+                            <div class="col" id="result3">
+                                Price
+                            </div>
+                            <div class="col" id="result4">
+                                Date
+                            </div>
+                            <div class="col" id="result5">
+                                Manufacturer Info
+                            </div>
+                            <div class="col" id="result6">
+                                Content
+                            </div>
+                        </div>
+                    </div>
+                    <!-- for loop -->
+                    {%for Result in Results %}
+                    <hr>
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            {% if Result.productName != "" %}
+                            <div class="col" id="p_result1">
+                                <span>
+                                    <!-- Product Name -->
+                                    {{Result.productName}}
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if Result.firstName != "" %}
+                            <div class="col" id="p_result2">
+                                <span>
+                                    <!-- Manager Info -->
+                                    {{Result.firstName}} {{Result.lastName}}
+                                    <button type="button" class="btn btn-outline-light float-right btn-sm"
+                                        title="Manager Information" data-container="body" data-html="true"
+                                        data-toggle="popover" data-placement="right"
+                                        data-content="Name   : {{Result.firstName}} {{Result.lastName}}<br>E-mail  : {{Result.no}}<br>{% if Result.phone != 0 %}Phone: {{Result.phone}}{% endif %}">
+                                        View details
+                                    </button>
+
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if Result.price != "" %}
+                            <div class="col" id="p_result3">
+                                <span>
+                                    <!-- Price -->
+                                    {{Result.price}}
+                                </span>
+
+                            </div>
+                            {% endif %}
+                            {% if Result.signDate != "" %}
+                            <div class="col" id="p_result4">
+                                <span>
+                                    <!-- Date -->
+                                    {{Result.signDate}}
+                                    <button type="button" class="btn btn-outline-light float-right btn-sm"
+                                        title="All Date" data-container="body" data-html="true" data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="Sign Date: {{Result.signDate}}<br>Start Date: {{Result.startDate}}<br>Finish Date: {{Result.finishDate}}">
+                                        View details
+                                    </button>
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if Result.manufacturer != "" %}
+                            <div class="col" id="p_result5">
+                                <span>
+                                    <!-- Manufacturer Info -->
+                                    {{Result.manufacturer}}
+                                    <button type="button" class="btn btn-outline-light float-right btn-sm"
+                                        title="Manufacturer Information" data-container="body" data-html="true"
+                                        data-toggle="popover" data-placement="right"
+                                        data-content="Vendor: {{Result.manufacturer}}<br>Primary contact: {{Result.partnerName}}<br>Telephone: {{Result.phone}}">
+                                        View details
+                                    </button>
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if Result.content != "" %}
+                            <div class="col" id="p_result6">
+                                <span>
+                                    <!-- Content -->
+                                    {{Result.content}}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

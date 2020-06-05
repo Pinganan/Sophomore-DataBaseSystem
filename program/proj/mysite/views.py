@@ -2,29 +2,38 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import EA
 from .models import CI
+from .models import Manufacturer
 import MySQLdb
 import datetime
+import os
 
 # Create your views here.
 
-def ini_data():
-    user = EA()
-    user.no = 'andy406031211@gmail.com'
-    user.ps = '123456'
-    user.firstName = "Ping"
-    user.lastName = 'Anan'
-    user.phone = '886982804351'
-    user.authority = 'R'
-    user.flag_leader = 1
-    user.save()
-    pro = CI()
-    pro.productName = "kkkkk"
-    pro.price = 1000
-    pro.signDate = '1999-9-4'
-    pro.finishDate = '1999-12-11'
-    pro.content = 'fhsgiuyrhtoierw'
-    pro.save()
-ini_data()
+def get_EA():
+    # os.getcwd()
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\EA.txt'
+    print(path)
+    
+    files = open(path, 'r')
+    for sample in files:
+        lists = []
+        user = EA()
+        count = 0
+        lists.append(sample.strip().split(" "))
+        for item in lists:
+            if count == 6:
+                user.no = item[0]
+                user.ps = item[1]
+                user.firstName = item[2]
+                user.lastName = item[3]
+                user.phone = item[4]
+                user.authority = item[5]
+                user.flag_leader = item[6]
+                user.save()
+            else :
+                count += 1
+    files.close()
+get_EA()
 
 def RootPage(request) :
     accountChange = ""  
@@ -80,3 +89,14 @@ def graph(request):
     mins = CI.objects.all().values('finishDate')
     lists.append(mins)
     return render(request, 'others.html', {'mins':lists})
+
+def BossPage(request):
+    bossFirstname = "Ping"
+    bossLastname = "-Anan！"
+    searchResult = "查詢的結果："
+    Mnames = EA.objects.all()
+    Enames = EA.objects.all()
+    MFnames = Manufacturer.objects.all()
+    Pnames = CI.objects.all()
+    Results = EA.objects.all()
+    return render(request, 'Brank.html', locals())

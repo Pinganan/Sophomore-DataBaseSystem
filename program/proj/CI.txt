@@ -1,0 +1,16 @@
+CI
+pixxa 5340 2000-1-6 2001-2-28 2002-4-12 I am fast food but delicious
+axxle 1360 2003-6-9 2004-3-6 2006-11-10 An axxle a day keep doctor away
+bmama 326 2006-3-31 2006-9-3 2008-6-30 I don't know what am I
+camby 96 2009-8-17 2013-8-8 2016-5-20 Dentist thanks your registration fee
+cocali 10000 2018-5-13 2019-9-30 2022-6-9 A kinds of aluminum can drink
+
+
+
+
+pixxa 5340 2000-1-6 2001-2-28 2002-4-12 我是速食但我很好吃
+axxle 1360 2003-6-9 2004-3-6 2006-11-10 一天一個我醫生遠離我
+bmama 326 2006-3-31 2006-9-3 2008-6-30 我不知道我是甚麼
+camby 96 2009-8-17 2013-8-8 2016-5-20 牙醫感謝你的掛號費
+cocali 10000 2018-5-13 2019-9-30 2022-6-9 一種鋁罐飲料
+
