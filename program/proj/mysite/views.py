@@ -150,15 +150,33 @@ def graph(request):
     lists.append(mins)
     return render(request, 'others.html', {'mins':lists})
 
+def control(check, checklist):
+    if 'p_pname' not in checklist:
+        check[0] = False
+    if 'p_mname' not in checklist:
+        check[1] = False
+    if 'p_price' not in checklist:
+        check[2] = False
+    if 'p_date' not in checklist:
+        check[3] = False
+    if 'p_manufacturer' not in checklist:
+        check[4] = False
+    if 'p_content' not in checklist:
+        check[5] = False
+
 def BossPage(request):
     bossFirstname = "Ping"
     bossLastname = "-Anan！"
     searchResult = "查詢的結果："
-    Mnames = EA.objects.all()
-    Enames = EA.objects.all()
-    MFnames = Manufacturer.objects.all()
-    Pnames = CI.objects.all()
-    Results = EA.objects.all()
+    checkprint = [True, True, True, True, True, True]
+    if request.POST:
+        checklist = request.POST.getlist('P')
+        control(checkprint, checklist)
+        Mnames = EA.objects.all()
+        Enames = EA.objects.all()
+        MFnames = Manufacturer.objects.all()
+        Pnames = CI.objects.all()
+        Results = EA.objects.all()
     return render(request, 'Brank.html', locals())
 
 
