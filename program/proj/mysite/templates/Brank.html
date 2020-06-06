@@ -40,10 +40,6 @@
                 document.operand.submit();
             }
         }
-        function printhidden() {
-            var t = $I("c_date").value;
-            alert(t)
-        }
         function selectPrint(number) {
             if ($I("result" + number).hidden) {
                 $I("result" + number).hidden = false;
@@ -53,15 +49,6 @@
                 $I("result" + number).hidden = true;
                 // $I("p_result" + number).hidden = true;
             }
-        }
-        function printMinfo() {
-
-        }
-        function printOtherdate() {
-
-        }
-        function printMFinfo() {
-
         }
         $(function () {
             $("[data-toggle='popover']").popover();
@@ -96,7 +83,7 @@
         <nav class="navbar navbar-light">
             <a></a>
             <div class="form-inline">
-                <h5 style="text-align:right;">Hi ，{{bossFirstname}}{{bossLastname}}</h5>
+                <h5 style="text-align:right;">Hi ，Daxton Shelley</h5>
                 <button class="btn btn-secondary">Log out</button>
             </div>
         </nav>
@@ -150,7 +137,7 @@
                         <select name="mfname" id="mfname">
                             <option value="">None</option>
                             {% for MFname in MFnames %}
-                            <option value="{{MFname.productName}}">{{MFname.manufacturer}}}</option>
+                            <option value="{{MFname.productName}}">{{MFname.manufacturer}}</option>
                             {% endfor %}
                         </select><br><br>
                     </span>
@@ -170,34 +157,34 @@
                     <h3>顯示的資料欄位</h3>
                     <div class="row align-items-center">
                         <span class="col blue">
-                            <input type="checkbox" id="p_pname" name="p_pname" value="p_pname" onclick="selectPrint(1)"
+                            <input type="checkbox" id="p1" name="P" value="p_pname" onclick="selectPrint(1)"
                                 checked>
-                            <label class="form-check-label" for="p_pname">Product Name</label>
+                            <label class="form-check-label" for="p1">Product Name</label>
                         </span>
                         <span class="col yellow">
-                            <input type="checkbox" id="p_mname" name="p_mname" value="p_mname" onclick="selectPrint(2)"
+                            <input type="checkbox" id="p2" name="P" value="p_mname" onclick="selectPrint(2)"
                                 checked>
-                            <label class="form-check-label" for="p_mname">Manager Info</label>
+                            <label class="form-check-label" for="p2">Manager Info</label>
                         </span>
                         <span class="col blue">
-                            <input type="checkbox" id="p_price" name="p_price" value="p_price" onclick="selectPrint(3)"
+                            <input type="checkbox" id="p3" name="P" value="p_price" onclick="selectPrint(3)"
                                 checked>
-                            <label class="form-check-label" for="p_price">Price</label>
+                            <label class="form-check-label" for="p3">Price</label>
                         </span>
                         <span class="col yellow">
-                            <input type="checkbox" id="p_date" name="p_date" value="p_date" onclick="selectPrint(4)"
+                            <input type="checkbox" id="p4" name="P" value="p_date" onclick="selectPrint(4)"
                                 checked>
-                            <label class="form-check-label" for="p_date">Date</label>
+                            <label class="form-check-label" for="p4">Date</label>
                         </span>
                         <span class="col blue">
-                            <input type="checkbox" id="p_manufacturer" name="p_manufacturer" value="p_manufacturer"
+                            <input type="checkbox" id="p5" name="P" value="p_manufacturer"
                                 onclick="selectPrint(5)" checked>
-                            <label class="form-check-label" for="p_manufacturer">Manufacturer Info</label>
+                            <label class="form-check-label" for="p5">Manufacturer Info</label>
                         </span>
                         <span class="col yellow">
-                            <input type="checkbox" id="p_content" name="p_content" value="p_content"
+                            <input type="checkbox" id="p6" name="P" value="p_content"
                                 onclick="selectPrint(6)" checked>
-                            <label class="form-check-label" for="p_content">Content</label>
+                            <label class="form-check-label" for="p6">Content</label>
                         </span>
                         <span class="col" id="submitbtn">
                             <button class="btn btn-light" onclick="postForm()">Search</button>
@@ -210,27 +197,38 @@
                 </div>
                 <div>
                     <h3>{{searchResult}}</h3>
-                    <button onclick="printhidden()">顯示隱藏的項目</button><br><br>
                     <div class="container-fluid">
                         <div class="row align-items-center">
+                            {% if checkprint.0 %}
                             <div class="col" id="result1">
-                                Product Name
+                                <b>Product Name</b>
                             </div>
+                            {% endif %}
+                            {% if checkprint.1 %}
                             <div class="col" id="result2">
-                                Manager Info
+                                <b>Manager Info</b>
                             </div>
+                            {% endif %}
+                            {% if checkprint.2 %}
                             <div class="col" id="result3">
-                                Price
+                                <b>Price</b>
                             </div>
+                            {% endif %}
+                            {% if checkprint.3 %}
                             <div class="col" id="result4">
-                                Date
+                                <b>Date</b>
                             </div>
+                            {% endif %}
+                            {% if checkprint.4 %}
                             <div class="col" id="result5">
-                                Manufacturer Info
+                                <b>Manufacturer Info</b>
                             </div>
+                            {% endif %}
+                            {% if checkprint.5 %}
                             <div class="col" id="result6">
-                                Content
+                                <b>Content</b>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                     <!-- for loop -->
@@ -238,7 +236,7 @@
                     <hr>
                     <div class="container-fluid">
                         <div class="row align-items-center">
-                            {% if Result.productName != "" %}
+                            {% if checkprint.0 %}
                             <div class="col" id="p_result1">
                                 <span>
                                     <!-- Product Name -->
@@ -246,7 +244,7 @@
                                 </span>
                             </div>
                             {% endif %}
-                            {% if Result.firstName != "" %}
+                            {% if checkprint.1 %}
                             <div class="col" id="p_result2">
                                 <span>
                                     <!-- Manager Info -->
@@ -261,7 +259,7 @@
                                 </span>
                             </div>
                             {% endif %}
-                            {% if Result.price != "" %}
+                            {% if checkprint.2 %}
                             <div class="col" id="p_result3">
                                 <span>
                                     <!-- Price -->
@@ -270,7 +268,7 @@
 
                             </div>
                             {% endif %}
-                            {% if Result.signDate != "" %}
+                            {% if checkprint.3 %}
                             <div class="col" id="p_result4">
                                 <span>
                                     <!-- Date -->
@@ -284,7 +282,7 @@
                                 </span>
                             </div>
                             {% endif %}
-                            {% if Result.manufacturer != "" %}
+                            {% if checkprint.4 %}
                             <div class="col" id="p_result5">
                                 <span>
                                     <!-- Manufacturer Info -->
@@ -298,7 +296,7 @@
                                 </span>
                             </div>
                             {% endif %}
-                            {% if Result.content != "" %}
+                            {% if checkprint.5 %}
                             <div class="col" id="p_result6">
                                 <span>
                                     <!-- Content -->
