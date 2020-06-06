@@ -22,5 +22,6 @@ urlpatterns = [
     path('Srank/', views.RootPage),
     path('Brank/', views.BossPage),
     path('others/', views.graph),
+    path('testt/', views.test),
     path('', views.login)
 ]

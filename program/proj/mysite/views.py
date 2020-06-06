@@ -134,6 +134,12 @@ def login(request):
             login = EA.objects.get(no=user.no, ps=user.ps)
             if login.authority == 'R':
                 return HttpResponseRedirect("http://127.0.0.1:8000/Srank/")
+            elif login.authority == 'B':
+                return HttpResponseRedirect("http://127.0.0.1:8000/Brank/")
+            elif login.authority == 'M':
+                return HttpResponseRedirect("http://127.0.0.1:8000/Mrank/")
+            elif login.authority == 'N':
+                return HttpResponseRedirect("http://127.0.0.1:8000/Nrank/")
         except:
             loginMessage = 'login failure'
     return render(request, 'login.html', {'loginMessage':loginMessage})
@@ -154,3 +160,14 @@ def BossPage(request):
     Pnames = CI.objects.all()
     Results = EA.objects.all()
     return render(request, 'Brank.html', locals())
+
+
+from django.db import connection
+
+def test(request):
+    # EA.objects.filter(authority='N').select_related().values()
+
+    with connection.cursor() as cursor:
+        cursor.execute('select distinct firstName, lastName, partnerName from mysite_ea as e, mysite_rdeal as r, mysite_manufacturer as m where m.productName_id=r.productName_id and r.no_id=e.no and authority="M"')
+        result = cursor.fetchall()
+    return render(request, 'testt.html', locals())
