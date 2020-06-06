@@ -1,19 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import EA
-from .models import CI
-from .models import Manufacturer
+from .models import EA, CI, Rdeal, Mdetect, Manufacturer
 import MySQLdb
 import datetime
 import os
 
 # Create your views here.
+# print(os.getcwd())
 
-def get_EA():
-    # os.getcwd()
-    path = 'C:\\Users\\user\\Desktop\\proj' + '\\EA.txt'
-    print(path)
-    
+def get_inidata():
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\EA.txt'    #EA data
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -21,19 +17,77 @@ def get_EA():
         count = 0
         lists.append(sample.strip().split(" "))
         for item in lists:
-            if count == 6:
-                user.no = item[0]
-                user.ps = item[1]
-                user.firstName = item[2]
-                user.lastName = item[3]
-                user.phone = item[4]
-                user.authority = item[5]
-                user.flag_leader = item[6]
-                user.save()
-            else :
-                count += 1
+            user.no = item[0]
+            user.ps = item[1]
+            user.firstName = item[2]
+            user.lastName = item[3]
+            user.phone = item[4]
+            user.authority = item[5]
+            user.flag_leader = item[6]
+            user.save()
     files.close()
-get_EA()
+
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\CI.txt'     #CI data
+    files = open(path, "r")
+    for sample in files:
+        lists = []
+        lists.append(sample.strip().split(" "))
+        product = CI()
+        for item in lists:
+            product.productName = item[0]
+            product.price = item[1]
+            product.signDate = item[2]
+            product.startDate = item[3]
+            product.finishDate = item[4]
+            product.content = "123456789"
+            product.save()
+    files.close()
+
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\Rdeal.txt'  #Relation data between EA & CI
+    files = open(path, 'r')
+    for sample in files:
+        lists = []
+        lists.append(sample.strip().split(" "))
+        try:
+            Rdeal.objects.get(no=lists[0][0], productName=lists[0][1])
+        except:
+            deal = Rdeal()
+            deal.no = EA.objects.get(no=lists[0][0])
+            deal.productName = CI.objects.get(productName=lists[0][1])
+            deal.save()
+    files.close()
+
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\Mdetect.txt'    # multivalue data of detect date
+    files = open(path, 'r')
+    for sample in files:
+        lists = []
+        lists.append(sample.strip().split(" "))
+        try:
+            Mdetect.objects.get(productName=lists[0][0], detectDate=lists[0][1])
+        except:
+            detect = Mdetect()
+            detect.productName = CI.objects.get(productName=lists[0][0])
+            detect.detectDate = productName=lists[0][1]
+            detect.save()
+    files.close()
+
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\Manufacturer.txt'    # multivalue data of detect date
+    files = open(path, 'r')
+    for sample in files:
+        lists = []
+        lists.append(sample.strip().split(" "))
+        try:
+            Manufacturer.objects.get(manufacturer=lists[0][0], productName=lists[0][1], partnerName=lists[0][2], phone=lists[0][3])
+        except:
+            partner = Manufacturer()
+            partner.manufacturer = lists[0][0]
+            partner.productName = CI.objects.get(productName=lists[0][1])
+            partner.partnerName = lists[0][2]
+            partner.phone = lists[0][3]
+            partner.save()
+    files.close()
+get_inidata()
+
 
 def RootPage(request) :
     accountChange = ""  

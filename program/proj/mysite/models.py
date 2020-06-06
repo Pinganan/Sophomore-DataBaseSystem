@@ -10,6 +10,8 @@ class EA(models.Model):
     phone       = models.BigIntegerField(null=True, default=0)
     authority   = models.CharField(max_length=1)
     flag_leader = models.BooleanField(default=0)
+    def __str__(self):
+        return self.no
 
 class CI(models.Model):
     productName = models.CharField(primary_key=True, max_length=15)
@@ -18,6 +20,8 @@ class CI(models.Model):
     startDate   = models.DateField(null=True)
     finishDate  = models.DateField(null=True)
     content     = models.TextField()
+    def __str__(self):
+        return self.productName
 
 class Rdeal(models.Model):
     no          = models.ForeignKey(EA, on_delete=models.PROTECT)
@@ -25,10 +29,10 @@ class Rdeal(models.Model):
 
 class Mdetect(models.Model):
     productName = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='pname')
-    detectDate  = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='ddate')
+    detectDate  = models.DateField()
 
 class Manufacturer(models.Model):
     manufacturer= models.CharField(max_length=20, default="squirrel")
     productName = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='man_name')
     partnerName = models.CharField(max_length=20)
-    phone       = models.IntegerField()
+    phone       = models.BigIntegerField(null=True, default=0)
