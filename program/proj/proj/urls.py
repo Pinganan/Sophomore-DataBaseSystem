@@ -21,7 +21,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('Srank/', views.RootPage),
     path('Brank/', views.BossPage),
+    path('Nrank/', views.NormalPage),
+    path('Nrank/detect/', views.DetectPage),
     path('others/', views.graph),
+    path('Mrank/', views.ManagerPage),
     path('testt/', views.test),
     path('', views.login)
 ]

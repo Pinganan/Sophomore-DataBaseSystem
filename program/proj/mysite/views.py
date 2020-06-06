@@ -169,16 +169,33 @@ def BossPage(request):
     bossLastname = "-Anan！"
     searchResult = "查詢的結果："
     checkprint = [True, True, True, True, True, True]
+    Mnames = EA.objects.all()
+    Enames = EA.objects.all()
+    MFnames = Manufacturer.objects.all()
+    Pnames = CI.objects.all()
+    pname = request.POST.get('pname','')
+    print(pname)
+    # Results = EA.objects.all()
     if request.POST:
         checklist = request.POST.getlist('P')
         control(checkprint, checklist)
-        Mnames = EA.objects.all()
-        Enames = EA.objects.all()
-        MFnames = Manufacturer.objects.all()
-        Pnames = CI.objects.all()
-        Results = EA.objects.all()
     return render(request, 'Brank.html', locals())
 
+def NormalPage(request):
+    searchResult = "查詢的結果："
+    checkprint = [True, True, True, True, True, True]
+    Mnames = EA.objects.all()
+    Enames = EA.objects.all()
+    MFnames = Manufacturer.objects.all()
+    Pnames = CI.objects.all()
+    Results = CI.objects.all()
+    if request.POST:
+        checklist = request.POST.getlist('P')
+        control(checkprint, checklist)
+    return render(request, 'Nrank.html', locals())
+
+def DetectPage(request):
+    return render(request, 'testt.html'. locals())
 
 from django.db import connection
 
@@ -189,3 +206,6 @@ def test(request):
         cursor.execute('select distinct firstName, lastName, partnerName from mysite_ea as e, mysite_rdeal as r, mysite_manufacturer as m where m.productName_id=r.productName_id and r.no_id=e.no and authority="M"')
         result = cursor.fetchall()
     return render(request, 'testt.html', locals())
+
+def ManagerPage(request):
+    return render(request, 'Mrank.html', locals())
