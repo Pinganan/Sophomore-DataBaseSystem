@@ -23,6 +23,7 @@ urlpatterns = [
     path('Brank/', views.BossPage),
     path('Nrank/', views.NormalPage),
     path('Nrank/detect/', views.DetectPage),
+    path('Nrank/employee/', views.EmployeePage),
     path('others/', views.graph),
     path('Mrank/', views.ManagerPage),
     path('testt/', views.test),

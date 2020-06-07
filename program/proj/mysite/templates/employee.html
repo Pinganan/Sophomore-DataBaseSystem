@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMPLOYEE PAGE</title>
+    <!-- jquery -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -12,17 +19,32 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #e4c4a7;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <nav class="navbar navbar-light">
-            <h5>SQUIRREL SQUIRREL SQUIRREL</h5>
-            <div class="form-inline">
-                <button class="btn btn-secondary" onclick="location.href='/'">Log out</button>
-            </div>
+            {% if d_pname %}
+            <h5>PRODUCT NAME : {{d_pname}}</h5>
+            {% else %}
+            <h5>Error! Please login in.</h5>
+            {% endif %}
+            <button style="text-align:right;" class="btn btn-secondary" onclick="location.href='/'">Log out</button>
         </nav>
     </div>
+    <div class="container-fluid">
+        {% if d_pname %}
+        <hr>
+        {% for r in result %}
+        <p>{{r.0}},{{r.1}},{{r.2}},{{r.3}}</p>
+        {% endfor %}
+        {% endif %}
+    </div>
 </body>
+
 </html>

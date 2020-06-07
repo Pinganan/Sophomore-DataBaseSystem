@@ -132,6 +132,8 @@ def login(request):
         user = EA()
         user.no = request.POST.get('uname')
         user.ps = request.POST.get('ps')
+        global account
+        account = user.no
         try:
             login = EA.objects.get(no=user.no, ps=user.ps)
             if login.authority == 'R':
@@ -208,25 +210,6 @@ def BossPage(request):
             Results = cursor.fetchall()
     return render(request, 'Brank.html', locals())
 
-def NormalPage(request):
-    searchResult = "查詢的結果："
-    checkprint = [True, True, True, True, True, True]
-    Mnames = EA.objects.all()
-    Enames = EA.objects.all()
-    MFnames = Manufacturer.objects.all()
-    Pnames = CI.objects.all()
-    Results = CI.objects.all()
-
-    if request.POST:
-        checklist = request.POST.getlist('P')
-        control(checkprint, checklist)
-    return render(request, 'Nrank.html', locals())
-
-def DetectPage(request):
-    return render(request, 'testt.html'. locals())
-
-
-
 def test(request):
     # EA.objects.filter(authority='N').select_related().values()
 
@@ -234,3 +217,87 @@ def test(request):
 
 def ManagerPage(request):
     return render(request, 'Mrank.html', locals())
+
+def NormalPage(request):
+    form = SearchForm()
+    searchResult = ""
+    checkprint = [True, True, True, True, True, True, True]
+    # Results = CI.objects.all()
+    if request.POST:
+        if request.POST.get('insertp'):
+            searchResult = "新增的結果："
+            pname = request.POST.get('insertp')
+            date = request.POST.get('insertd')
+            print(pname)
+            try:
+                Mdetect.objects.get(productName=pname, detectDate=date)
+            except:
+                detect = Mdetect()
+                detect.productName = CI.objects.get(productName=pname)
+                detect.detectDate = date
+                detect.save()
+                with connection.cursor() as cursor:
+                    choice = 'select productName, firstName, lastName, no, phone, price, signDate, startDate, finishDate, manufacturer, partnerName, mphone, content '
+                    choice += 'from mysite_EA, mysite_CI, mysite_Rdeal, mysite_Manufacturer '
+                    choice += 'where mysite_EA.no = mysite_Rdeal.no_id and mysite_CI.productName = mysite_Rdeal.productName_id and mysite_Manufacturer.productName_id = mysite_CI.productName and mysite_EA.authority = "M" and mysite_CI.productName = \"' + pname + '\"'
+                    cursor.execute(choice)
+                    Results = cursor.fetchall()
+        else:
+            checklist = request.POST.getlist('P')
+            print(checklist)
+            searchResult = "查詢的結果："
+            control(checkprint, checklist)
+            if 'p_employee' not in checklist:
+                checkprint[6] = False
+            sform = SearchForm(request.POST) # form 包含提交的数据
+            
+            if sform.is_valid():# 如果提交的数据合法
+                choice = 'select productName, firstName, lastName, no, phone, price, signDate, startDate, finishDate, manufacturer, partnerName, mphone, content '
+                choice += 'from mysite_EA, mysite_CI, mysite_Rdeal, mysite_Manufacturer '
+                choice += 'where mysite_EA.no = mysite_Rdeal.no_id and mysite_CI.productName = mysite_Rdeal.productName_id and mysite_Manufacturer.productName_id = mysite_CI.productName and mysite_EA.authority = "N" '
+                global account
+                choice += ' and mysite_EA.no=\"' + account + '\"'
+                print(choice)
+                
+                pname = sform.cleaned_data['pname']
+                if pname != "":
+                    choice += " and productName=\'" + pname + "\'"
+                price = sform.cleaned_data['price']
+                if price == '1':
+                    choice += ' and price <= 10 and price > 0'
+                elif price == '10':
+                    choice += ' and price <= 100 and price >10'
+                elif price == '100':
+                    choice += 'and price <= 1000 and price >100'
+                elif price == '1000':
+                    choice += ' and price <= 10000 and price >1000'
+                mfname = sform.cleaned_data['mfname']
+                if mfname != "":
+                    choice += ' and manufacturer=\"' + mfname + '\"'
+                date1 = request.POST.get('date1')
+                date2 = request.POST.get('date2')
+                if date1 !="":
+                    choice += ' and mysite_CI.signDate < 2008-2-11'
+            else:
+                print(sform.errors)
+        with connection.cursor() as cursor:
+            cursor.execute(choice)
+            Results = cursor.fetchall()
+    return render(request, 'Nrank.html', locals())
+
+def DetectPage(request):
+    if request.POST:
+        d_pname = request.POST.get('d_pname')
+        result = Mdetect.objects.filter(productName = d_pname)
+    return render(request, 'detect.html', locals())
+
+def EmployeePage(request):
+    if request.POST:
+        d_pname = request.POST.get('d_pname')
+        with connection.cursor() as cursor:
+            choice = 'select firstName, lastName, no, phone '
+            choice += 'from mysite_EA, mysite_Rdeal '
+            choice += 'where mysite_EA.no = mysite_Rdeal.no_id and mysite_Rdeal.productName_id = \"' + d_pname + '\"'
+            cursor.execute(choice)
+            result = cursor.fetchall()
+    return render(request, 'employee.html', locals())
