@@ -43,11 +43,11 @@
         function selectPrint(number) {
             if ($I("result" + number).hidden) {
                 $I("result" + number).hidden = false;
-                // $I("p_result" + number).hidden = false;
+                $I("postp"+number).checked = true;
             }
             else {
                 $I("result" + number).hidden = true;
-                // $I("p_result" + number).hidden = true;
+                $I("postp"+number).checked = false;
             }
         }
         $(function () {
@@ -75,6 +75,9 @@
         .blue {
             background-color: blanchedalmond;
         }
+        .col{
+            text-align:center;
+        }
     </style>
 </head>
 
@@ -97,58 +100,30 @@
                         <h3>查詢欄位</h3>
                         <span>
                             <label for="pname"> Product Name</label><br>
-                            <select name="pname" id="pname">
-                                <option value="">None</option>
-                                {% for Pname in Pnames %}
-                                <option value="{{Pname.productName}}">{{Pname.productName}}</option>
-                                {% endfor %}
-                            </select><br><br>
+                            {{form.pname}}<br><br>
                         </span>
                         <label for="mname"> Manager Name</label><br>
-                        <select name="mname" id="mname">
-                            <option value="">None</option>
-                            {% for Mname in Mnames %}
-                            <option value="{{Mname.no}}">{{Mname.firstName}}, {{Mname.lastName}}</option>
-                            {% endfor %}
-                        </select><br><br>
+                        {{form.mname}}<br><br>
                     </span>
                     <span>
-                        <label for="ename"> Employee Name</label><br>
-                        <select name="ename" id="ename">
-                            <option value="">None</option>
-                            {% for Ename in Enames %}
-                            <option value="{{Ename.no}}">{{Ename.firstName}}, {{Ename.lastName}}</option>
-                            {% endfor %}
-                        </select><br><br>
-                    </span>
-                    <span>
-                        <label for="price"> Price Range</label>
-                        <br>
-                        <select name="price" id="price">
-                            <option value="0" selected>None</option>
-                            <option value="1">0~10</option>
-                            <option value="10">10~100</option>
-                            <option value="100">100~1000</option>
-                            <option value="1000">1000~10000</option>
-                        </select><br><br>
+                        <label for="price"> Price Range</label><br>
+                        {{form.price}}<br><br>
                     </span>
                     <span>
                         <label for="mfname"> Manufacturer</label><br>
-                        <select name="mfname" id="mfname">
-                            <option value="">None</option>
-                            {% for MFname in MFnames %}
-                            <option value="{{MFname.productName}}">{{MFname.manufacturer}}</option>
-                            {% endfor %}
-                        </select><br><br>
+                        {{form.mfname}}<br><br>
                     </span>
-                    <span>
-                        <label for="c_date1"> Date Range</label><br>
-                        起
-                        <input type="date" id="c_date1" placeholder="2014-09-18"><br>
-                        迄
-                        <input type="date" id="c_date2" placeholder="2014-09-18"><br><br>
+                    <span class="col" id="submitbtn">
+                        <button class="btn btn-light" onclick="postForm()">Search</button>
                     </span>
-                    <p style="color: red;">{{searchChange}}</p>
+                    <span hidden>
+                        <input type="checkbox" id="postp1" name="P" value="p_pname" checked>
+                        <input type="checkbox" id="postp2" name="P" value="p_mname" checked>
+                        <input type="checkbox" id="postp3" name="P" value="p_price" checked>
+                        <input type="checkbox" id="postp4" name="P" value="p_date" checked>
+                        <input type="checkbox" id="postp5" name="P" value="p_manufacturer" checked>
+                        <input type="checkbox" id="postp6" name="P" value="p_content" checked>
+                    </span>
                 </form>
             </div>
             <div class="col-sm-10">
@@ -157,37 +132,29 @@
                     <h3>顯示的資料欄位</h3>
                     <div class="row align-items-center">
                         <span class="col blue">
-                            <input type="checkbox" id="p1" name="P" value="p_pname" onclick="selectPrint(1)"
-                                checked>
+                            <input type="checkbox" id="p1" name="P" value="p_pname" onclick="selectPrint(1)" checked>
                             <label class="form-check-label" for="p1">Product Name</label>
                         </span>
                         <span class="col yellow">
-                            <input type="checkbox" id="p2" name="P" value="p_mname" onclick="selectPrint(2)"
-                                checked>
+                            <input type="checkbox" id="p2" name="P" value="p_mname" onclick="selectPrint(2)" checked>
                             <label class="form-check-label" for="p2">Manager Info</label>
                         </span>
                         <span class="col blue">
-                            <input type="checkbox" id="p3" name="P" value="p_price" onclick="selectPrint(3)"
-                                checked>
+                            <input type="checkbox" id="p3" name="P" value="p_price" onclick="selectPrint(3)" checked>
                             <label class="form-check-label" for="p3">Price</label>
                         </span>
                         <span class="col yellow">
-                            <input type="checkbox" id="p4" name="P" value="p_date" onclick="selectPrint(4)"
-                                checked>
+                            <input type="checkbox" id="p4" name="P" value="p_date" onclick="selectPrint(4)" checked>
                             <label class="form-check-label" for="p4">Date</label>
                         </span>
                         <span class="col blue">
-                            <input type="checkbox" id="p5" name="P" value="p_manufacturer"
-                                onclick="selectPrint(5)" checked>
+                            <input type="checkbox" id="p5" name="P" value="p_manufacturer" onclick="selectPrint(5)"
+                                checked>
                             <label class="form-check-label" for="p5">Manufacturer Info</label>
                         </span>
                         <span class="col yellow">
-                            <input type="checkbox" id="p6" name="P" value="p_content"
-                                onclick="selectPrint(6)" checked>
+                            <input type="checkbox" id="p6" name="P" value="p_content" onclick="selectPrint(6)" checked>
                             <label class="form-check-label" for="p6">Content</label>
-                        </span>
-                        <span class="col" id="submitbtn">
-                            <button class="btn btn-light" onclick="postForm()">Search</button>
                         </span>
                     </div>
                     <hr>
@@ -196,7 +163,7 @@
 
                 </div>
                 <div>
-                    <h3>{{searchResult}}</h3>
+                    <h3>查詢的結果：</h3>
                     <div class="container-fluid">
                         <div class="row align-items-center">
                             {% if checkprint.0 %}
@@ -240,7 +207,7 @@
                             <div class="col" id="p_result1">
                                 <span>
                                     <!-- Product Name -->
-                                    {{Result.productName}}
+                                    {{Result.0}}
                                 </span>
                             </div>
                             {% endif %}
@@ -248,11 +215,11 @@
                             <div class="col" id="p_result2">
                                 <span>
                                     <!-- Manager Info -->
-                                    {{Result.firstName}} {{Result.lastName}}
+                                    {{Result.1}} {{Result.2}}
                                     <button type="button" class="btn btn-outline-light float-right btn-sm"
                                         title="Manager Information" data-container="body" data-html="true"
                                         data-toggle="popover" data-placement="right"
-                                        data-content="Name   : {{Result.firstName}} {{Result.lastName}}<br>E-mail  : {{Result.no}}<br>{% if Result.phone != 0 %}Phone: {{Result.phone}}{% endif %}">
+                                        data-content="Name   : {{Result.1}} {{Result.2}}<br>E-mail  : {{Result.3}}<br>{% if Result.phone != 0 %}Phone: {{Result.4}}{% endif %}">
                                         View details
                                     </button>
 
@@ -263,7 +230,7 @@
                             <div class="col" id="p_result3">
                                 <span>
                                     <!-- Price -->
-                                    {{Result.price}}
+                                    {{Result.5}}
                                 </span>
 
                             </div>
@@ -272,11 +239,11 @@
                             <div class="col" id="p_result4">
                                 <span>
                                     <!-- Date -->
-                                    {{Result.signDate}}
+                                    {{Result.6}}
                                     <button type="button" class="btn btn-outline-light float-right btn-sm"
                                         title="All Date" data-container="body" data-html="true" data-toggle="popover"
                                         data-placement="right"
-                                        data-content="Sign Date: {{Result.signDate}}<br>Start Date: {{Result.startDate}}<br>Finish Date: {{Result.finishDate}}">
+                                        data-content="Sign Date: {{Result.6}}<br>Start Date: {{Result.7}}<br>Finish Date: {{Result.8}}">
                                         View details
                                     </button>
                                 </span>
@@ -286,11 +253,11 @@
                             <div class="col" id="p_result5">
                                 <span>
                                     <!-- Manufacturer Info -->
-                                    {{Result.manufacturer}}
+                                    {{Result.9}}
                                     <button type="button" class="btn btn-outline-light float-right btn-sm"
                                         title="Manufacturer Information" data-container="body" data-html="true"
                                         data-toggle="popover" data-placement="right"
-                                        data-content="Vendor: {{Result.manufacturer}}<br>Primary contact: {{Result.partnerName}}<br>Telephone: {{Result.phone}}">
+                                        data-content="Vendor: {{Result.9}}<br>Primary contact: {{Result.10}}<br>Telephone: {{Result.11}}">
                                         View details
                                     </button>
                                 </span>
@@ -300,7 +267,7 @@
                             <div class="col" id="p_result6">
                                 <span>
                                     <!-- Content -->
-                                    {{Result.content}}
+                                    {{Result.12}}
                                 </span>
                             </div>
                             {% endif %}

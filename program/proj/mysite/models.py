@@ -35,4 +35,4 @@ class Manufacturer(models.Model):
     manufacturer= models.CharField(max_length=20, default="squirrel")
     productName = models.ForeignKey(CI, on_delete=models.PROTECT, related_name='man_name')
     partnerName = models.CharField(max_length=20)
-    phone       = models.BigIntegerField(null=True, default=0)
+    mphone       = models.BigIntegerField(null=True, default=0)

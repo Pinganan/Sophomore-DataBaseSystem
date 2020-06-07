@@ -4,6 +4,8 @@ from .models import EA, CI, Rdeal, Mdetect, Manufacturer
 import MySQLdb
 import datetime
 import os
+from django.db import connection
+from .forms import SearchForm
 
 # Create your views here.
 # print(os.getcwd())
@@ -71,19 +73,19 @@ def get_inidata():
             detect.save()
     files.close()
 
-    path = 'C:\\Users\\user\\Desktop\\proj' + '\\Manufacturer.txt'    # multivalue data of detect date
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\Manufacturer.txt'    # Manufacturer data
     files = open(path, 'r')
     for sample in files:
         lists = []
         lists.append(sample.strip().split(" "))
         try:
-            Manufacturer.objects.get(manufacturer=lists[0][0], productName=lists[0][1], partnerName=lists[0][2], phone=lists[0][3])
+            Manufacturer.objects.get(manufacturer=lists[0][0], productName=lists[0][1], partnerName=lists[0][2], mphone=lists[0][3])
         except:
             partner = Manufacturer()
             partner.manufacturer = lists[0][0]
             partner.productName = CI.objects.get(productName=lists[0][1])
             partner.partnerName = lists[0][2]
-            partner.phone = lists[0][3]
+            partner.mphone = lists[0][3]
             partner.save()
     files.close()
 get_inidata()
@@ -165,20 +167,45 @@ def control(check, checklist):
         check[5] = False
 
 def BossPage(request):
-    bossFirstname = "Ping"
-    bossLastname = "-Anan！"
-    searchResult = "查詢的結果："
+    form = SearchForm()
     checkprint = [True, True, True, True, True, True]
     Mnames = EA.objects.all()
     Enames = EA.objects.all()
     MFnames = Manufacturer.objects.all()
     Pnames = CI.objects.all()
-    pname = request.POST.get('pname','')
-    print(pname)
-    # Results = EA.objects.all()
+    choice = 'select productName, firstName, lastName, no, phone, price, signDate, startDate, finishDate, manufacturer, partnerName, mphone, content '
+    choice += 'from mysite_EA, mysite_CI, mysite_Rdeal, mysite_Manufacturer '
+    choice += 'where mysite_EA.no = mysite_Rdeal.no_id and mysite_CI.productName = mysite_Rdeal.productName_id and mysite_Manufacturer.productName_id = mysite_CI.productName and mysite_EA.authority = "M" '
     if request.POST:
         checklist = request.POST.getlist('P')
         control(checkprint, checklist)
+        sform = SearchForm(request.POST) # form 包含提交的数据
+
+        if sform.is_valid():# 如果提交的数据合法
+            pname = sform.cleaned_data['pname']
+            if pname != "":
+                choice += " and productName=\'" + pname + "\'"
+            mname = sform.cleaned_data['mname']
+            if mname != "":
+                choice += ' and firstName=\"' + mname + '\"'
+            price = sform.cleaned_data['price']
+            if price == '1':
+                choice += ' and price <= 10 and price > 0'
+            elif price == '10':
+                choice += ' and price <= 100 and price >10'
+            elif price == '100':
+                choice += 'and price <= 1000 and price >100'
+            elif price == '1000':
+                choice += ' and price <= 10000 and price >1000'
+            mfname = sform.cleaned_data['mfname']
+            if mfname != "":
+                choice += ' and manufacturer=\"' + mfname + '\"'
+        else:
+            print(sform.errors)
+        
+        with connection.cursor() as cursor:
+            cursor.execute(choice)
+            Results = cursor.fetchall()
     return render(request, 'Brank.html', locals())
 
 def NormalPage(request):
@@ -189,6 +216,7 @@ def NormalPage(request):
     MFnames = Manufacturer.objects.all()
     Pnames = CI.objects.all()
     Results = CI.objects.all()
+
     if request.POST:
         checklist = request.POST.getlist('P')
         control(checkprint, checklist)
@@ -197,14 +225,11 @@ def NormalPage(request):
 def DetectPage(request):
     return render(request, 'testt.html'. locals())
 
-from django.db import connection
+
 
 def test(request):
     # EA.objects.filter(authority='N').select_related().values()
 
-    with connection.cursor() as cursor:
-        cursor.execute('select distinct firstName, lastName, partnerName from mysite_ea as e, mysite_rdeal as r, mysite_manufacturer as m where m.productName_id=r.productName_id and r.no_id=e.no and authority="M"')
-        result = cursor.fetchall()
     return render(request, 'testt.html', locals())
 
 def ManagerPage(request):
