@@ -27,5 +27,8 @@ urlpatterns = [
     path('others/', views.graph),
     path('Mrank/', views.ManagerPage),
     path('testt/', views.test),
-    path('', views.login)
+    path('', views.login),
+    path('Mrank/detect/', views.DetectPage),
+    path('Mrank/employee/', views.EmployeePage),
+    path('M_insert/', views.M_insertPage),
 ]

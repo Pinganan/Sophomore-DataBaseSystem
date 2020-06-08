@@ -135,12 +135,14 @@
                 <form action="" method="POST" id="insertform">
                     {% csrf_token %}
                     <h3>新增檢測日期</h3>
+                    <!-- {{formD.pname}} -->
                     <label id="insertp">Product Name</label>
                     <input type="text" id="insertp" name="insertp" placeholder="what is the product name"
                         style="width: 85%;" required>
                     <label id="insertd">New Detect Date</label>
                     <input type="date" id="insertd" name="insertd" placeholder="2014-09-18" required><br><br>
                     <button type="submit" class="btn btn-light">Insert</button>
+                    {{Nrank_insertDate}}
                 </form>
             </div>
             <div class="col-sm-10">
