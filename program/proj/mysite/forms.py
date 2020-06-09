@@ -3,13 +3,13 @@ from django.forms import fields
 from django.forms import widgets
 from mysite import models
 
-pname_q=[(c.productName, c.productName) for c in models.CI.objects.all()]
-mname_q=[(e.firstName, e.firstName) for e in models.EA.objects.filter(authority='M')]
-ename_q=[(e.firstName, e.firstName) for e in models.EA.objects.all()]
-price_q=[(0,'None'),(1,'1~10'),(10,'10~100'),(100,'100~1000'),(1000,'1000~10000')]
-mfname_q=[(m.manufacturer, m.manufacturer) for m in models.Manufacturer.objects.all()]
-eno_q=[(e.no, e.no) for e in models.EA.objects.all()]
-enoreplace_q=[(e.no, e.no) for e in models.EA.objects.all()]
+# pname_q=[(c.productName, c.productName) for c in models.CI.objects.all()]
+# mname_q=[(e.firstName, e.firstName) for e in models.EA.objects.filter(authority='M')]
+# ename_q=[(e.firstName, e.firstName) for e in models.EA.objects.all()]
+# price_q=[(0,'None'),(1,'1~10'),(10,'10~100'),(100,'100~1000'),(1000,'1000~10000')]
+# mfname_q=[(m.manufacturer, m.manufacturer) for m in models.Manufacturer.objects.all()]
+# eno_q=[(e.no, e.no) for e in models.EA.objects.all()]
+# enoreplace_q=[(e.no, e.no) for e in models.EA.objects.all()]
 noselect=[('', 'None')]
 class SearchForm(forms.Form):
     pname = fields.ChoiceField(
@@ -44,6 +44,12 @@ class SearchForm(forms.Form):
     )
     def __init__(self,*args,**kwargs):
         super(SearchForm, self).__init__(*args,**kwargs)
+        pname_q=[(c.productName, c.productName) for c in models.CI.objects.all()]
+        mname_q=[(e.firstName, e.firstName) for e in models.EA.objects.filter(authority='M')]
+        ename_q=[(e.firstName, e.firstName) for e in models.EA.objects.all()]
+        price_q=[(0,'None'),(1,'1~10'),(10,'10~100'),(100,'100~1000'),(1000,'1000~10000')]
+        mfname_q=[(m.manufacturer, m.manufacturer) for m in models.Manufacturer.objects.all()]
+        eno_q=[(e.no, e.no) for e in models.EA.objects.filter(authority='N')]
         self.fields["pname"].choices = noselect + pname_q
         self.fields["mname"].choices = noselect + mname_q
         self.fields["ename"].choices = noselect + ename_q
@@ -63,6 +69,8 @@ class IForm(forms.Form):
         required=True,
     )
     def __init__(self,*args,**kwargs):
+        pname_q=[(c.productName, c.productName) for c in models.CI.objects.all()]
+        eno_q=[(e.no, e.no) for e in models.EA.objects.filter(authority='N')]
         super(IForm, self).__init__(*args,**kwargs)
         self.fields["pname"].choices = pname_q
         self.fields["eno"].choices = eno_q
@@ -77,16 +85,19 @@ class RForm(forms.Form):
         widget = widgets.Select,
         required=True,
     )
-    enoreplace = fields.ChoiceField(
+    enonew = fields.ChoiceField(
         choices = [],
         widget = widgets.Select,
         required=True,
     )
     def __init__(self,*args,**kwargs):
+        pname_q=[(c.productName, c.productName) for c in models.CI.objects.all()]
+        eno_q=[(e.no, e.no) for e in models.EA.objects.filter(authority='N')]
         super(RForm, self).__init__(*args,**kwargs)
+        enonew_q=[(e.no, e.no) for e in models.EA.objects.filter(authority='N')]
         self.fields["pname"].choices = pname_q
         self.fields["eno"].choices = eno_q
-        self.fields["enoreplace"].choices = enoreplace_q
+        self.fields["enonew"].choices = enonew_q
 
 
 class DetectForm(forms.Form):
@@ -96,5 +107,6 @@ class DetectForm(forms.Form):
         required=True,
     )
     def __init__(self,*args,**kwargs):
+        pname_q=[(c.productName, c.productName) for c in models.CI.objects.all()]
         super(DetectForm, self).__init__(*args,**kwargs)
         self.fields["pname"].choices = pname_q

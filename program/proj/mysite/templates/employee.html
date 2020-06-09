@@ -41,7 +41,15 @@
         {% if d_pname %}
         <hr>
         {% for r in result %}
-        <p>{{r.0}},{{r.1}},{{r.2}},{{r.3}}</p>
+        <b>First Name: </b>
+        <p>{{r.0}}</p>
+        <b>Last Name: </b>
+        <p>{{r.1}}</p>
+        <b>E-mail: </b>
+        <p>{{r.2}}</p>
+        <b>Phone: </b>
+        <p>{{r.3}}</p>
+        <hr>
         {% endfor %}
         {% endif %}
     </div>

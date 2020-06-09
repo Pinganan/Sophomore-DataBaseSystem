@@ -82,6 +82,10 @@
         .col {
             text-align: center;
         }
+
+        .message{
+            color: red;
+        }
     </style>
 </head>
 
@@ -142,7 +146,7 @@
                     <label id="insertd">New Detect Date</label>
                     <input type="date" id="insertd" name="insertd" placeholder="2014-09-18" required><br><br>
                     <button type="submit" class="btn btn-light">Insert</button>
-                    {{Nrank_insertDate}}
+                    <p class="message">{{Nrank_insertDate}}</p>
                 </form>
             </div>
             <div class="col-sm-10">
@@ -295,7 +299,7 @@
                                         class="btn btn-outline-light btn-sm" title="Manufacturer Information"
                                         data-container="body" data-html="true" data-toggle="popover"
                                         data-placement="right"
-                                        data-content="Vendor: {{Result.9}}<br>Primary contact: {{Result.10}}<br>Telephone: {{Result.11}}">
+                                        data-content="Vendor: {{Result.9}}<br>Primary contact: {{Result.10}}<br>{% if Result.11 != 0 %}Telephone : {{Result.11}}{% endif %}">
                                         View details
                                     </button>
                                 </span>

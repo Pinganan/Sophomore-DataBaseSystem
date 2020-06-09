@@ -14,7 +14,7 @@ from .forms import DetectForm
 # print(os.getcwd())
 
 def get_inidata():
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\EA.txt'    #EA data
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\EA.txt'    #EA data
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -32,7 +32,7 @@ def get_inidata():
             user.save()
     files.close()
 
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\CI.txt'     #CI data
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\CI.txt'     #CI data
     files = open(path, "r")
     for sample in files:
         lists = []
@@ -48,7 +48,7 @@ def get_inidata():
             product.save()
     files.close()
 
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\Rdeal.txt'  #Relation data between EA & CI
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\Rdeal.txt'  #Relation data between EA & CI
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -62,7 +62,7 @@ def get_inidata():
             deal.save()
     files.close()
 
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\Mdetect.txt'    # multivalue data of detect date
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\Mdetect.txt'    # multivalue data of detect date
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -76,7 +76,7 @@ def get_inidata():
             detect.save()
     files.close()
 
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\Manufacturer.txt'    # Manufacturer data
+    path = 'C:\\Users\\user\\Desktop\\proj' + '\\Manufacturer.txt'    # Manufacturer data
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -255,8 +255,9 @@ def ManagerPage(request):
                 choice += ' and manufacturer=\"' + mfname + '\"'
             date1 = request.POST.get('date1')
             date2 = request.POST.get('date2')
-            if date1 !="":
-                choice += ' and mysite_CI.signDate < 2008-2-11'
+            if date1 != "":
+                choice += ' and mysite_CI.signDate > \"' + date1 + '\"'
+                choice += ' and mysite_CI.finishDate < \"' + date2 + '\"'
             global account
             choice += ' and mysite_ci.productName in ( select productName from mysite_ea, mysite_rdeal, mysite_ci where mysite_rdeal.no_id=\"' +  account  + '\" and mysite_rdeal.productName_id=mysite_ci.productName)'
         else:
@@ -268,6 +269,7 @@ def ManagerPage(request):
 
 def NormalPage(request):
     form = SearchForm()
+    global account
     # formD = DetectForm()
     searchResult = ""
     Nrank_insertDate=""
@@ -280,20 +282,26 @@ def NormalPage(request):
             pname = request.POST.get('insertp')
             date = request.POST.get('insertd')
             try:
-                CI.objects.filter(productName=pname)
-                detect = Mdetect()
-                detect.productName = CI.objects.get(productName=pname)
-                detect.detectDate = date
-                detect.save()
-                with connection.cursor() as cursor:
-                    choice = 'select productName, firstName, lastName, no, phone, price, signDate, startDate, finishDate, manufacturer, partnerName, mphone, content '
-                    choice += 'from mysite_EA, mysite_CI, mysite_Rdeal, mysite_Manufacturer '
-                    choice += 'where mysite_EA.no = mysite_Rdeal.no_id and mysite_CI.productName = mysite_Rdeal.productName_id and mysite_Manufacturer.productName_id = mysite_CI.productName and mysite_EA.authority = "M" and mysite_CI.productName = \"' + pname + '\"'
-                    cursor.execute(choice)
-                    Results = cursor.fetchall()
-                Nrank_insertDate = " insert success "
+                CI.objects.get(productName=pname)
+                try:
+                    Rdeal.objects.get(no=account, productName=pname)
+                    detect = Mdetect()
+                    detect.productName = CI.objects.get(productName=pname)
+                    detect.detectDate = date
+                    detect.save()
+                    with connection.cursor() as cursor:
+                        choice = 'select productName, firstName, lastName, no, phone, price, signDate, startDate, finishDate, manufacturer, partnerName, mphone, content '
+                        choice += 'from mysite_EA, mysite_CI, mysite_Rdeal, mysite_Manufacturer '
+                        choice += 'where mysite_EA.no = mysite_Rdeal.no_id and mysite_CI.productName = mysite_Rdeal.productName_id and mysite_Manufacturer.productName_id = mysite_CI.productName and mysite_EA.authority = "M" and mysite_CI.productName = \"' + pname + '\"'
+                        cursor.execute(choice)
+                        Results = cursor.fetchall()
+                    Nrank_insertDate = " insert success "
+                except:
+                    Nrank_insertDate = " insert failure "
+                    return render(request, 'Nrank.html', locals())
             except:
                 Nrank_insertDate = " insert failure "
+                return render(request, 'Nrank.html', locals())
         else:
             checklist = request.POST.getlist('P')
             searchResult = "查詢的結果："
@@ -326,7 +334,6 @@ def NormalPage(request):
                 date2 = request.POST.get('date2')
                 if date1 !="":
                     choice += ' and mysite_CI.signDate < 2008-2-11'
-                global account
                 choice += ' and mysite_ci.productName in ( select productName from mysite_ea, mysite_rdeal, mysite_ci where mysite_rdeal.no_id=\"' +  account  + '\" and mysite_rdeal.productName_id=mysite_ci.productName)'
             else:
                 print(sform.errors)
@@ -355,6 +362,7 @@ def EmployeePage(request):
 def M_insertPage(request):
     global account
     no = account
+    judge = request.POST.get('judge')
     form = IForm()
     Rform = RForm()
     sform = IForm(request.POST)
@@ -364,7 +372,7 @@ def M_insertPage(request):
     replaceMessage = ""
     updateMessage = ""
     if request.POST:
-        if request.POST.get('mfname','') != '':
+        if request.POST.get('mfname','') != '' and judge == '1':
             pro = CI()
             pname = request.POST.get('pname')
             try:
@@ -404,6 +412,7 @@ def M_insertPage(request):
                 deal.no = EA.objects.get(no=no)
                 deal.productName = CI.objects.get(productName=pname)
                 deal.save()
+                insertfMessage = "insert success"
 
                 print('pname: '+pname)
                 print('price: '+price)
@@ -413,8 +422,7 @@ def M_insertPage(request):
                 print('mfname: '+mfname)
                 print('mpname: '+mpname)
                 print('mfphone: '+mfphone)
-                insertfMessage = "insert success"
-        elif sform.is_valid():
+        elif sform.is_valid() and judge == '2':
             eno = sform.cleaned_data['eno']
             pname = sform.cleaned_data['pname']
             print('eno: '+eno)
@@ -427,39 +435,49 @@ def M_insertPage(request):
                 Rdeal.objects.get(no=eno, productName=pname)
                 inserteMessage = "insert failure"
             except:
-                deal.save()
-                inserteMessage = "insert success"
-        elif rform.is_valid():
+                try:
+                    Rdeal.objects.get(no=account, productName=pname)
+                    deal.save()
+                    inserteMessage = "insert success"
+                except:
+                    inserteMessage = "insert failure"
+        elif rform.is_valid() and judge == '4':
             pname = rform.cleaned_data['pname']
-            enor = rform.cleaned_data['enoreplace']
             eno = rform.cleaned_data['eno']
-            deal = Rdeal()
-            deal.no = EA.objects.get(no=eno)
-            deal.productName = CI.objects.get(productName=pname)
-            deal.save()
-            replaceMessage = "replace success"
-            print('eno: '+eno)
+            enonew = rform.cleaned_data['enonew']
+            try:
+                deal = Rdeal.objects.get(no=eno, productName=pname)
+                deal.no = EA.objects.get(no=enonew)
+                deal.save()
+                replaceMessage = "replace success"
+            except:
+                replaceMessage = "replace failure"
             print('pname: '+pname)
-            print('enor: ' + enor)
+            print('eno: '+eno)
+            print('enonew: ' + enonew)
         else:
+            man = Manufacturer()
             pname = request.POST.get('u_pname')
-            price = request.POST.get('u_price')
+            price = request.POST.get('u_price','')
             startd = request.POST.get('u_startd')
             finishd = request.POST.get('u_finishd')
             mpname = request.POST.get('u_mpname')
             mfphone = request.POST.get('u_mfphone')
-
-            pro = CI.objects.get(productName=pname)
-            if price == "":
+            try:
+                pro = CI.objects.get(productName=pname)
                 pro.price = price
-            pro.startDate = startd
-            pro.finishDate = finishd
-
-            man = Manufacturer.objects.get(productName=pname)
-            man.partnerName = mpname
-            man.phone = mfphone
-            man.save()
-            pro.save()
-            updateMessage = "update success"
+                pro.startDate = startd
+                pro.finishDate = finishd
+                try:
+                    man = CI.objects.get(productName=pname)
+                    man.partnerName = mpname
+                    man.phone = mfphone
+                    man.save()
+                    pro.save()
+                    updateMessage = "update success"
+                except:
+                    updateMessage = "update failure"
+            except:
+                updateMessage = "update failure"
 
     return render(request, 'M_insert.html', locals())

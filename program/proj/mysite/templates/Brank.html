@@ -27,8 +27,8 @@
             return document.getElementsByName(name);
         }
         function postForm() {
-            var d1 = $I("c_date1").value;
-            var d2 = $I("c_date2").value;
+            var d1 = $N("date1")[0].value;
+            var d2 = $N("date2")[0].value;
             if (d1 != "" && d2 == "") {
                 alert("請填寫完整日期範圍")
             }
@@ -255,7 +255,7 @@
                                     <button type="button" class="btn btn-outline-light float-right btn-sm"
                                         title="Manufacturer Information" data-container="body" data-html="true"
                                         data-toggle="popover" data-placement="right"
-                                        data-content="Vendor: {{Result.9}}<br>Primary contact: {{Result.10}}<br>Telephone: {{Result.11}}">
+                                        data-content="Vendor: {{Result.9}}<br>Primary contact: {{Result.10}}<br>{% if Result.11 != 0 %}Telephone : {{Result.11}}{% endif %}">
                                         View details
                                     </button>
                                 </span>

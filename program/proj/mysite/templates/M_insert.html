@@ -21,16 +21,52 @@
             return document.getElementsByName(name);
         }
         function postInsert() {
-            document.insertf.action = "";
-            document.insertf.submit();
+            if ($N('pname')[0].value == '') {
+                alert('請填寫 Product Name!')
+            }
+            else if ($N('price')[0].value == '') {
+                alert('請填寫 Price!')
+            }
+            else if ($N('signd')[0].value == '') {
+                alert('請填寫 Sign Date!')
+            }
+            else if ($N('mfname')[0].value == '') {
+                alert('請填寫 Manufactrer Name!')
+            }
+            else if ($N('mpname')[0].value == '') {
+                alert('請填寫完整 Primary Contact!')
+            }
+            else {
+                alert('成功送出表單!')
+                document.insertf.action = "";
+                document.insertf.submit();
+            }
         }
         function postInsertE() {
             document.inserte.action = "";
             document.inserte.submit();
         }
         function postUpdate() {
-            document.updatef.action = "";
-            document.updatef.submit();
+            if ($N('u_pname')[0].value == '') {
+                alert('請填寫 Product Name!')
+            }
+            else if ($N('u_price')[0].value == '') {
+                alert('請填寫 Price!')
+            }
+            else if ($N('u_startd')[0].value == '') {
+                alert('請填寫 Start Date!')
+            }
+            else if ($N('u_finishd')[0].value == '') {
+                alert('請填寫 Finish Date!')
+            }
+            else if ($N('u_mpname')[0].value == '') {
+                alert('請填寫 Primary Contact!')
+            }
+            else {
+                alert('成功送出表單!')
+                document.updatef.action = "";
+                document.updatef.submit();
+            }
         }
         function postReplace() {
             document.replacef.action = "";
@@ -80,8 +116,12 @@
         }
 
         .link-right {
-            width: 80px;
+            width: 5px;
             border-right: solid floralwhite 1px;
+        }
+
+        .message {
+            color: red;
         }
     </style>
     <meta charset="UTF-8">
@@ -99,7 +139,7 @@
         </nav>
         <hr>
         <h2 style="text-align:center; background-color: blanchedalmond; height: 50px;">INSERT</h2>
-        <form action="" method="POST" name="insertf">
+        <form action="" method="POST" name="insertf" id="insertf">
             {% csrf_token %}
             <div class="row">
                 <div class="col">
@@ -125,6 +165,7 @@
                     <input type="text" id="mpname" name="mpname" required><br><br>
                     <label for="mfphone">Telephone</label>
                     <input type="tel" id="mfphone" name="mfphone"><br><br>
+                    <input type="number" value="1" name="judge" hidden>
                 </div>
         </form>
         <form action="" method="POST" name="inserte" id="inserte">
@@ -135,23 +176,24 @@
                 {{form.pname}}<br><br>
                 New Account
                 {{form.eno}}<br>
+                <input type="number" value="2" name="judge" hidden>
             </div>
         </form>
     </div>
     <br>
     <div class="row">
         <div class="col-sm-8 text-center">
-            {{insertfMessage}}
             <button class="btn btn-light" onclick="postInsert()">Insert</button>
+            <p class="message">{{insertfMessage}}</p>
         </div>
         <div class="col-sm-4 text-center">
-            {{inserteMessage}}
             <button class="btn btn-light" onclick="postInsertE()">Insert</button>
+            <p class="message">{{inserteMessage}}</p>
         </div>
     </div>
     <hr>
     <h2 style="text-align:center; background-color: blanchedalmond; height: 50px;">UPDATE</h2>
-    <form action="" method="POST" name="updatef">
+    <form action="" method="POST" name="updatef" id="updatef">
         {% csrf_token %}
         <div class="row">
             <div class="col">
@@ -175,29 +217,32 @@
                 <input type="text" id="u_mpname" name="u_mpname" required><br><br>
                 <label for="mfphone">Telephone</label>
                 <input type="tel" id="u_mfphone" name="u_mfphone" required><br><br>
+                <input type="number" value="3" name="judge" hidden>
             </div>
     </form>
-    <form action="" method="POST" name="replacef">
+    <form action="" method="POST" name="replacef" id="replacef">
         {% csrf_token %}
         <div class="col">
             <h3>Replace Employee</h3><br>
+            Product Name
             {{Rform.pname}}<br><br>
             Replace Account
             {{Rform.eno}}<br><br>
             New Account
-            {{Rform.enoreplace}}<br>
+            {{Rform.enonew}}<br>
+            <input type="number" value="4" name="judge" hidden>
         </div>
     </form>
     </div>
     <br>
     <div class="row">
         <div class="col-sm-8 text-center">
-            {{updateMessage}}
             <button class="btn btn-light" onclick="postUpdate()">Update</button>
+            <p class="message">{{updateMessage}}</p>
         </div>
         <div class="col-sm-4 text-center">
-            {{replaceMessage}}
             <button class="btn btn-light" onclick="postReplace()">Replace</button>
+            <p class="message">{{replaceMessage}}</p>
         </div>
     </div>
     </div>
