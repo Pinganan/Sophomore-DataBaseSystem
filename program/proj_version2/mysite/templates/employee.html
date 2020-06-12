@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMPLOYEE PAGE</title>
+    <!-- jquery -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #e4c4a7;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-light">
+            {% if d_pname %}
+            <h5>PRODUCT NAME : {{d_pname}}</h5>
+            {% else %}
+            <h5>Error! Please login in.</h5>
+            {% endif %}
+            <button style="text-align:right;" class="btn btn-secondary" onclick="location.href='/'">Log out</button>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        {% if d_pname %}
+        <hr>
+        {% for r in result %}
+        <b>First Name: </b>
+        <p>{{r.0}}</p>
+        <b>Last Name: </b>
+        <p>{{r.1}}</p>
+        <b>E-mail: </b>
+        <p>{{r.2}}</p>
+        <b>Phone: </b>
+        <p>{{r.3}}</p>
+        <hr>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+
+</html>

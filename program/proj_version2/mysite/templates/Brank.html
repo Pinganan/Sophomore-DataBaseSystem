@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOSS PAGE</title>
+    <!-- jquery -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        function $I(id) {
+            return document.getElementById(id);
+        }
+        function $N(name) {
+            return document.getElementsByName(name);
+        }
+        function postForm() {
+            var d1 = $N("date1")[0].value;
+            var d2 = $N("date2")[0].value;
+            if (d1 != "" && d2 == "") {
+                alert("請填寫完整日期範圍")
+            }
+            else if (d2 != "" && d1 == "") {
+                alert("請填寫完整日期範圍")
+            }
+            else {
+                document.operand.action = "";
+                document.operand.submit();
+            }
+        }
+        function selectPrint(number) {
+            if ($I("result" + number).hidden) {
+                $I("result" + number).hidden = false;
+                $I("postp"+number).checked = true;
+            }
+            else {
+                $I("result" + number).hidden = true;
+                $I("postp"+number).checked = false;
+            }
+        }
+        $(function () {
+            $("[data-toggle='popover']").popover();
+        });
+    </script>
+    <style>
+        body {
+            background-color: #e4c4a7;
+        }
+
+        #operand {
+            margin-left: 15%;
+            margin-right: 8%;
+        }
+
+        #submitbtn {
+            margin-left: 5%;
+        }
+
+        .yellow {
+            background-color: floralwhite;
+        }
+
+        .blue {
+            background-color: blanchedalmond;
+        }
+        .col{
+            text-align:center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-light">
+            <h5>SQUIRREL IS REAL BOSS FOR WHOLE WORLD</h5>
+            <button class="btn btn-secondary" onclick="location.href='/'">Log out</button>
+        </nav>
+        <hr>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2">
+                <form method="POST" action="" name="operand" id="operand" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <span>
+                        <h3>查詢欄位</h3>
+                        <span>
+                            <label for="pname"> Product Name</label><br>
+                            {{form.pname}}<br><br>
+                        </span>
+                        <label for="mname"> Manager Name</label><br>
+                        {{form.mname}}<br><br>
+                    </span>
+                    <span>
+                        <label for="price"> Price Range</label><br>
+                        {{form.price}}<br><br>
+                    </span>
+                    <span>
+                        <label for="mfname"> Manufacturer</label><br>
+                        {{form.mfname}}<br><br>
+                    </span>
+                    <span>
+                        <button class="btn btn-light" onclick="postForm()">Search</button>
+                    </span>
+                    <span hidden>
+                        <input type="checkbox" id="postp1" name="P" value="p_pname" checked>
+                        <input type="checkbox" id="postp2" name="P" value="p_mname" checked>
+                        <input type="checkbox" id="postp3" name="P" value="p_price" checked>
+                        <input type="checkbox" id="postp4" name="P" value="p_date" checked>
+                        <input type="checkbox" id="postp5" name="P" value="p_manufacturer" checked>
+                        <input type="checkbox" id="postp6" name="P" value="p_content" checked>
+                    </span>
+                </form>
+            </div>
+            <div class="col-sm-10">
+                <form method="POST" action="" name="operand">
+                    {% csrf_token %}
+                    <h3>顯示的資料欄位</h3>
+                    <div class="row align-items-center">
+                        <span class="col blue">
+                            <input type="checkbox" id="p1" name="P" value="p_pname" onclick="selectPrint(1)" checked>
+                            <label class="form-check-label" for="p1">Product Name</label>
+                        </span>
+                        <span class="col yellow">
+                            <input type="checkbox" id="p2" name="P" value="p_mname" onclick="selectPrint(2)" checked>
+                            <label class="form-check-label" for="p2">Manager Info</label>
+                        </span>
+                        <span class="col blue">
+                            <input type="checkbox" id="p3" name="P" value="p_price" onclick="selectPrint(3)" checked>
+                            <label class="form-check-label" for="p3">Price</label>
+                        </span>
+                        <span class="col yellow">
+                            <input type="checkbox" id="p4" name="P" value="p_date" onclick="selectPrint(4)" checked>
+                            <label class="form-check-label" for="p4">Date</label>
+                        </span>
+                        <span class="col blue">
+                            <input type="checkbox" id="p5" name="P" value="p_manufacturer" onclick="selectPrint(5)"
+                                checked>
+                            <label class="form-check-label" for="p5">Manufacturer Info</label>
+                        </span>
+                        <span class="col yellow">
+                            <input type="checkbox" id="p6" name="P" value="p_content" onclick="selectPrint(6)" checked>
+                            <label class="form-check-label" for="p6">Content</label>
+                        </span>
+                    </div>
+                    <hr>
+                </form>
+                <div>
+
+                </div>
+                <div>
+                    <h3>查詢的結果：</h3>
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            {% if checkprint.0 %}
+                            <div class="col" id="result1">
+                                <b>Product Name</b>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.1 %}
+                            <div class="col" id="result2">
+                                <b>Manager Info</b>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.2 %}
+                            <div class="col" id="result3">
+                                <b>Price</b>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.3 %}
+                            <div class="col" id="result4">
+                                <b>Date</b>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.4 %}
+                            <div class="col" id="result5">
+                                <b>Manufacturer Info</b>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.5 %}
+                            <div class="col" id="result6">
+                                <b>Content</b>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- for loop -->
+                    {%for Result in Results %}
+                    <hr>
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            {% if checkprint.0 %}
+                            <div class="col" id="p_result1">
+                                <span>
+                                    <!-- Product Name -->
+                                    {{Result.0}}
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.1 %}
+                            <div class="col" id="p_result2">
+                                <span>
+                                    <!-- Manager Info -->
+                                    {{Result.1}} {{Result.2}}
+                                    <button type="button" class="btn btn-outline-light float-right btn-sm"
+                                        title="Manager Information" data-container="body" data-html="true"
+                                        data-toggle="popover" data-placement="right"
+                                        data-content="Name   : {{Result.1}} {{Result.2}}<br>E-mail  : {{Result.3}}<br>{% if Result.phone != 0 %}Phone: {{Result.4}}{% endif %}">
+                                        View details
+                                    </button>
+
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.2 %}
+                            <div class="col" id="p_result3">
+                                <span>
+                                    <!-- Price -->
+                                    {{Result.5}}
+                                </span>
+
+                            </div>
+                            {% endif %}
+                            {% if checkprint.3 %}
+                            <div class="col" id="p_result4">
+                                <span>
+                                    <!-- Date -->
+                                    {{Result.6}}
+                                    <button type="button" class="btn btn-outline-light float-right btn-sm"
+                                        title="All Date" data-container="body" data-html="true" data-toggle="popover"
+                                        data-placement="right"
+                                        data-content="Sign Date: {{Result.6}}<br>Start Date: {{Result.7}}<br>Finish Date: {{Result.8}}">
+                                        View details
+                                    </button>
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.4 %}
+                            <div class="col" id="p_result5">
+                                <span>
+                                    <!-- Manufacturer Info -->
+                                    {{Result.9}}
+                                    <button type="button" class="btn btn-outline-light float-right btn-sm"
+                                        title="Manufacturer Information" data-container="body" data-html="true"
+                                        data-toggle="popover" data-placement="right"
+                                        data-content="Vendor: {{Result.9}}<br>Primary contact: {{Result.10}}<br>{% if Result.11 != 0 %}Telephone : {{Result.11}}{% endif %}">
+                                        View details
+                                    </button>
+                                </span>
+                            </div>
+                            {% endif %}
+                            {% if checkprint.5 %}
+                            <div class="col" id="p_result6">
+                                <span>
+                                    <!-- Content -->
+                                    {{Result.12}}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

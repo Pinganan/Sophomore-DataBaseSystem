@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DETECT PAGE</title>
+    <!-- jquery -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        function $I(id) {
+            return document.getElementById(id);
+        }
+        function $N(name) {
+            return document.getElementsByName(name);
+        }
+        function postForm() {
+            var d1 = $I("c_date1").value;
+            var d2 = $I("c_date2").value;
+            if (d1 != "" && d2 == "") {
+                alert("請填寫完整日期範圍")
+            }
+            else if (d2 != "" && d1 == "") {
+                alert("請填寫完整日期範圍")
+            }
+            else {
+                document.operand.action = "";
+                document.operand.submit();
+            }
+        }
+        function selectPrint(number) {
+            if ($I("result" + number).hidden) {
+                $I("result" + number).hidden = false;
+                $I("postp" + number).checked = true;
+                // $I("p_result" + number).hidden = false;
+            }
+            else {
+                $I("result" + number).hidden = true;
+                $I("postp" + number).checked = false;
+                // $I("p_result" + number).hidden = true;
+            }
+        }
+        $(function () {
+            $("[data-toggle='popover']").popover();
+        });
+    </script>
+    <style>
+        body {
+            background-color: #e4c4a7;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-light">
+            {% if d_pname %}
+            <h5>PRODUCT NAME : {{d_pname}}</h5>
+            {% else %}
+            <h5>Error! Please login in.</h5>
+            {% endif %}
+            <button style="text-align:right;" class="btn btn-secondary" onclick="location.href='/'">Log out</button>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        {% if d_pname %}
+            <hr>
+            {% for r in result %}
+                <p>{{r.detectDate}}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+
+</html>

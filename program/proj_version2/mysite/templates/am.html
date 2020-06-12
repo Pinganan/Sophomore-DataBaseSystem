@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROOT PAGE</title>
+    <script>
+        var result = 0;
+        var form_o = document.getElementById("operand");
+        function selectA() {
+            result = 0;
+            document.getElementById('no').disabled = false;
+            document.getElementById('fname').disabled = false;
+            document.getElementById('lname').disabled = false;
+            document.getElementById('phone').disabled = false;
+            document.getElementById('authority').disabled = false;
+            document.getElementById('leader').disabled = false;
+            document.getElementById('authority').disabled = false;
+            document.getElementById('leader2').disabled = false;
+        }
+        function selectD() {
+            result = 1;
+            document.getElementById('no').disabled = false;
+            document.getElementById('fname').disabled = true;
+            document.getElementById('lname').disabled = true;
+            document.getElementById('phone').disabled = true;
+            document.getElementById('leader').disabled = true;
+            document.getElementById('authority').disabled = true;
+            document.getElementById('leader2').disabled = true;
+        }
+        function checkEmail(email) {
+            var index;
+            index = email.indexOf('@', 0);// 尋找 @ 的位置，0 代表開始尋找的起始位置
+            if (email.length == 0) {
+                //alert("請輸入電子郵件地址！");
+                return (false);
+            } else if (index == -1) {
+                //alert("錯誤：必須包含「@」。");
+                return (false);
+            } else if (index == 0) {
+                //alert("錯誤：「@」之前不可為空字串。");
+                return (false);
+            } else if (index == email.length - 1) {
+                //alert("錯誤：「@」之後不可為空字串。");
+                return (false);
+            } else
+                return (true);
+        }
+        function checkPassword(password) {
+            if (password.length == 0) {
+                //alert("請輸入密碼！");
+                return (false);
+            } else
+                return (true);
+        }
+        function checkName(name) {
+            if (name.length == 0) {
+                //alert("請輸入完整姓名！");
+                return (false);
+            } else
+                return (true);
+        }
+        function check_form() {
+            var account_no = document.getElementsByName('no')[0].value;
+            var account_ps = document.getElementsByName('ps')[0].value;
+            var account_fname = document.getElementsByName('fname')[0].value;
+            var account_lname = document.getElementsByName('lname')[0].value;
+            if (!checkEmail(account_no)) {
+                //alert("Email 資料有誤，表單將不送出！");
+                return false;
+            }
+            else if (result == 1) {
+                return true;
+            }
+            else if (!checkPassword(account_ps)) {
+                //alert("Password 資料有誤，表單將不送出！");
+                return false;
+            }
+            else if (!checkName(account_fname) || !checkPassword(account_lname)) {
+                //alert("姓名資料有誤，表單將不送出！");
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        function getAdd_delete() {
+            if (check_form()) {
+                alert("成功送出表單！");
+                document.operand.action = "";
+                document.operand.submit();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-light">
+            <a></a>
+            <div class="form-inline">
+                <h5 style="text-align:right;">Hi Ping Anan</h5>
+                <button class="btn btn-secondary" onclick="location.href='/'">Log out</button>
+            </div>
+        </nav>
+    </div>
+    <form method="POST" action="" name="operand" id="operand" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3">
+                <div class="card" style="width: 50%; height: 70%; border-style: hidden;">
+                    <div class="col">
+                        <div style="height: 30%;">
+                            <h4>帳戶處理</h4>
+                        </div>
+                        <div style="height: 30%;">
+                            <label><input name="add_delete" type="radio" value="add" onclick="selectA()"
+                                    checked>Add</label>
+                            <br></div>
+                        <div style="height: 30%;">
+                            <label><input name="add_delete" type="radio" value="delete"
+                                    onclick="selectD()">Delete</label>
+                            <br></div>
+                        <div style="height: 30%;">
+                            <label><input name="add_delete" type="radio" value="update"
+                                    onclick="selectA()">Update</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card" style="width: 80%; height: 70%; border-style: hidden;">
+                    <label for="no">Account number</label>
+                    <input type="email" name="no" id="no" required />
+                    <br>
+                    <label for="ps">Password</label>
+                    <input type="password" name="ps" id="ps" required />
+                    <br>
+                    <label for="fname">First name</label>
+                    <input type="text" name="fname" id="fname" required />
+                    <br>
+                    <label for="lname">Last name</label>
+                    <input type="text" name="lname" id="lname" required />
+                    <br>
+                    <label for="phone">Phone number</label>
+                    <input type="tel" name="phone" id="phone" />
+                    <br>
+                    Authority
+                    <select name="authority" id="authority">
+                        <option value="N" selected>Normal</option>
+                        <option value="M">Manager</option>
+                        <option value="B">Boss</option>
+                    </select>
+                    <br>
+                    <p>
+                        Leader
+                        <label><input name="leader" id="leader" type="radio" value=1>Yes</label>
+                        <label><input name="leader" id="leader2" type="radio" value=0 checked>No</label>
+                    </p>
+                    <button onclick="getAdd_delete()">Submit</button>
+                    <p style="color: red;">{{accountChange}}</p>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

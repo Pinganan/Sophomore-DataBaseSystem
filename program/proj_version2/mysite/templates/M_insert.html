@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        function $I(id) {
+            return document.getElementById(id);
+        }
+        function $N(name) {
+            return document.getElementsByName(name);
+        }
+        function postInsert() {
+            if ($N('pname')[0].value == '') {
+                alert('請填寫 Product Name!')
+            }
+            else if ($N('price')[0].value == '') {
+                alert('請填寫 Price!')
+            }
+            else if ($N('signd')[0].value == '') {
+                alert('請填寫 Sign Date!')
+            }
+            else if ($N('mfname')[0].value == '') {
+                alert('請填寫 Manufactrer Name!')
+            }
+            else if ($N('mpname')[0].value == '') {
+                alert('請填寫完整 Primary Contact!')
+            }
+            else {
+                alert('成功送出表單!')
+                document.insertf.action = "";
+                document.insertf.submit();
+            }
+        }
+        function postInsertE() {
+            document.inserte.action = "";
+            document.inserte.submit();
+        }
+        function postUpdate() {
+            if ($N('u_pname')[0].value == '') {
+                alert('請填寫 Product Name!')
+            }
+            else if ($N('u_price')[0].value == '') {
+                alert('請填寫 Price!')
+            }
+            else if ($N('u_startd')[0].value == '') {
+                alert('請填寫 Start Date!')
+            }
+            else if ($N('u_finishd')[0].value == '') {
+                alert('請填寫 Finish Date!')
+            }
+            else if ($N('u_mpname')[0].value == '') {
+                alert('請填寫 Primary Contact!')
+            }
+            else {
+                alert('成功送出表單!')
+                document.updatef.action = "";
+                document.updatef.submit();
+            }
+        }
+        function postReplace() {
+            document.replacef.action = "";
+            document.replacef.submit();
+        }
+        function selectPrint(number) {
+            if ($I("result" + number).hidden) {
+                $I("result" + number).hidden = false;
+                $I("postp" + number).checked = true;
+                // $I("p_result" + number).hidden = false;
+            }
+            else {
+                $I("result" + number).hidden = true;
+                $I("postp" + number).checked = false;
+                // $I("p_result" + number).hidden = true;
+            }
+        }
+        $(function () {
+            $("[data-toggle='popover']").popover();
+        });
+    </script>
+    <style>
+        body {
+            background-color: #e4c4a7;
+        }
+
+        #operand {
+            margin-left: 15%;
+            margin-right: 8%;
+        }
+
+        .yellow {
+            background-color: floralwhite;
+        }
+
+        .blue {
+            background-color: blanchedalmond;
+        }
+
+        .col {
+            margin-right: 10%;
+            text-align: right;
+        }
+
+        h3 {
+            text-align: right;
+        }
+
+        .link-right {
+            width: 5px;
+            border-right: solid floralwhite 1px;
+        }
+
+        .message {
+            color: red;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-light">
+            <h5>SQUIRREL SQUIRREL SQUIRREL</h5>
+            <div class="form-inline">
+                <button class="btn btn-light" onclick="location.href='/Mrank'">Search</button>
+                <button class="btn btn-secondary" onclick="location.href='/'">Log out</button>
+            </div>
+        </nav>
+        <hr>
+        <h2 style="text-align:center; background-color: blanchedalmond; height: 50px;">INSERT</h2>
+        <form action="" method="POST" name="insertf" id="insertf">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <h3>Product Info</h3><br>
+                    <label for="pname">Product Name</label>
+                    <input type="text" id="pname" name="pname" required><br>
+                    <label for="price">Price</label>
+                    <input type="number" id="price" name="price" required><br>
+                    <label for="signd">Sign Date</label>
+                    <input type="date" id="signd" name="signd" required><br>
+                    <label for="startd">Start Date</label>
+                    <input type="date" id="startd" name="startd"><br>
+                    <label for="finishd">Finish Date</label>
+                    <input type="date" id="finishd" name="finishd">
+                    <br>
+                    <br>
+                </div>
+                <div class="col link-right">
+                    <h3>Manufacturer Info</h3><br>
+                    <label for="mfname">Manufacturer Name</label>
+                    <input type="text" id="mfname" name="mfname" required><br><br>
+                    <label for="mpname">Primary contact</label>
+                    <input type="text" id="mpname" name="mpname" required><br><br>
+                    <label for="mfphone">Telephone</label>
+                    <input type="tel" id="mfphone" name="mfphone"><br><br>
+                    <input type="number" value="1" name="judge" hidden>
+                </div>
+        </form>
+        <form action="" method="POST" name="inserte" id="inserte">
+            {% csrf_token %}
+            <div class="col">
+                <h3>Employee</h3><br>
+                Product Name
+                {{form.pname}}<br><br>
+                New Account
+                {{form.eno}}<br>
+                <input type="number" value="2" name="judge" hidden>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-8 text-center">
+            <button class="btn btn-light" onclick="postInsert()">Insert</button>
+            <p class="message">{{insertfMessage}}</p>
+        </div>
+        <div class="col-sm-4 text-center">
+            <button class="btn btn-light" onclick="postInsertE()">Insert</button>
+            <p class="message">{{inserteMessage}}</p>
+        </div>
+    </div>
+    <hr>
+    <h2 style="text-align:center; background-color: blanchedalmond; height: 50px;">UPDATE</h2>
+    <form action="" method="POST" name="updatef" id="updatef">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <h3>Product Info</h3><br>
+                <label for="pname">Product Name</label>
+                <input type="text" id="u_pname" name="u_pname" required><br>
+                <label for="price">Price</label>
+                <input type="number" id="u_price" name="u_price" required><br>
+                <label for="signd">Sign Date</label>
+                <input type="date" id="u_signd" name="u_signd" disabled><br>
+                <label for="startd">Start Date</label>
+                <input type="date" id="u_startd" name="u_startd" required><br>
+                <label for="finishd">Finish Date</label>
+                <input type="date" id="u_finishd" name="u_finishd" required><br><br>
+            </div>
+            <div class="col link-right">
+                <h3>Manufacturer Info</h3><br>
+                <label for="mfname">Manufacturer Name</label>
+                <input type="text" id="u_mfname" name="u_mfname" disabled><br><br>
+                <label for="mpname">Primary contact</label>
+                <input type="text" id="u_mpname" name="u_mpname" required><br><br>
+                <label for="mfphone">Telephone</label>
+                <input type="tel" id="u_mfphone" name="u_mfphone" required><br><br>
+                <input type="number" value="3" name="judge" hidden>
+            </div>
+    </form>
+    <form action="" method="POST" name="replacef" id="replacef">
+        {% csrf_token %}
+        <div class="col">
+            <h3>Replace Employee</h3><br>
+            Product Name
+            {{Rform.pname}}<br><br>
+            Replace Account
+            {{Rform.eno}}<br><br>
+            New Account
+            {{Rform.enonew}}<br>
+            <input type="number" value="4" name="judge" hidden>
+        </div>
+    </form>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-8 text-center">
+            <button class="btn btn-light" onclick="postUpdate()">Update</button>
+            <p class="message">{{updateMessage}}</p>
+        </div>
+        <div class="col-sm-4 text-center">
+            <button class="btn btn-light" onclick="postReplace()">Replace</button>
+            <p class="message">{{replaceMessage}}</p>
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>
