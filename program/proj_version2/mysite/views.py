@@ -14,7 +14,7 @@ from .forms import DetectForm
 # print(os.getcwd())
 
 def get_inidata():
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\EA.txt'    #EA data
+    path = 'C:\\Users\\User\\Desktop\\proj_version2' + '\\EA.txt'    #EA data
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -32,7 +32,7 @@ def get_inidata():
             user.save()
     files.close()
 
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\CI.txt'     #CI data
+    path = 'C:\\Users\\User\\Desktop\\proj_version2' + '\\CI.txt'     #CI data
     files = open(path, "r")
     for sample in files:
         lists = []
@@ -48,7 +48,7 @@ def get_inidata():
             product.save()
     files.close()
 
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\Rdeal.txt'  #Relation data between EA & CI
+    path = 'C:\\Users\\User\\Desktop\\proj_version2' + '\\Rdeal.txt'  #Relation data between EA & CI
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -62,7 +62,7 @@ def get_inidata():
             deal.save()
     files.close()
 
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\Mdetect.txt'    # multivalue data of detect date
+    path = 'C:\\Users\\User\\Desktop\\proj_version2' + '\\Mdetect.txt'    # multivalue data of detect date
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -76,7 +76,7 @@ def get_inidata():
             detect.save()
     files.close()
 
-    path = 'C:\\Users\\PC235\\Desktop\\proj' + '\\Manufacturer.txt'    # Manufacturer data
+    path = 'C:\\Users\\User\\Desktop\\proj_version2' + '\\Manufacturer.txt'    # Manufacturer data
     files = open(path, 'r')
     for sample in files:
         lists = []
@@ -351,7 +351,7 @@ def NormalPage(request):
 def DetectPage(request):
     if request.POST:
         d_pname = request.POST.get('d_pname')
-        result = Mdetect.objects.filter(productName = d_pname)
+        result = Mdetect.objects.filter(productName=d_pname).values('detectDate').order_by('detectDate')
     return render(request, 'detect.html', locals())
 
 def EmployeePage(request):

@@ -47,8 +47,10 @@
         <p>{{r.1}}</p>
         <b>E-mail: </b>
         <p>{{r.2}}</p>
+        {%if r.3 != 0%}
         <b>Phone: </b>
         <p>{{r.3}}</p>
+        {%endif%}
         <hr>
         {% endfor %}
         {% endif %}
